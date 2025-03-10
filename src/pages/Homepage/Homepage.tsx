@@ -28,11 +28,11 @@ const Homepage = () => {
       <Header2 />
       <Banner  />
       <Opening />
-      <UniProduct />
-      <MaleProduct />
+      {/* <UniProduct /> */}
+      {/* <MaleProduct /> */}
       {/* <FemaleProduct /> */}
-      {/* <NewProduct />
-      <HotSaleProduct /> */}
+      {/* <NewProduct /> */}
+      <HotSaleProduct />
       {/* <ProductDetail /> */}
       {/* <ExampleComponent /> */}
       

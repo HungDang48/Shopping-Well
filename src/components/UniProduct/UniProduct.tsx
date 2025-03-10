@@ -33,7 +33,7 @@ const UniProduct: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const productsPerPage = 10;
+    const productsPerPage = 8;
 
     // Fetch products (only unisex products, gendersID === 3)
     const fetchProducts = async () => {

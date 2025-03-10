@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './StyleHotProduct.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './StyleHotProduct.css';
 
 export interface Product {
     id: string;
@@ -23,7 +23,7 @@ const HotSaleProduct: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const productsPerPage = 10;
+    const productsPerPage = 8; // Giữ số sản phẩm hiển thị giống HTML1
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -57,42 +57,42 @@ const HotSaleProduct: React.FC = () => {
     if (error) return <p>Error: {error.message}</p>;
 
     return (
-        <div>
-            <div className="header-low">
-                SẢN PHẨM BÁN CHẠY
+        <div className="container-hotsale">
+            <div className="title">
+                SẢN PHẨM <span>BÁN CHẠY</span>
             </div>
-            <div className="product-grid">
+
+            <div className="products">
                 {currentProducts && currentProducts.map((product) => (
                     <div 
                         className="product" 
                         key={product.id} 
                         onClick={() => handleProductClick(product.id)}
                     >
-                        <img alt={product.name} height="400" src={product.image} width="300" />
-                        <div className="product-title">
-                            {product.name}
-                        </div>
-                        <div className="product-price">
-                        {product.price.toLocaleString('vi-VN')} VND
-                        </div>
+                        <img alt={product.name} height="300" src={product.image} width="300" />
+                        <div className="discount">- 17%</div>
+                        <div className="name">{product.name}</div>
+                        <div className="price">{product.price.toLocaleString('vi-VN')}₫</div>
+                        <div className="old-price">{(product.price * 1.17).toLocaleString('vi-VN')}₫</div>
                     </div>
                 ))}
             </div>
+
+            {/* Nút phân trang */}
             <div className="pagination">
-                <button className='BTN-pagination'
-                    onClick={() => paginate(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
+                <button className="BTN-pagination" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
                     Previous
                 </button>
                 <span> Page {currentPage} </span>
-                <button className='BTN-pagination'
-                    onClick={() => paginate(currentPage + 1)}
-                    disabled={!products || currentPage === Math.ceil((products.length || 0) / productsPerPage)}
-                >
+                <button className="BTN-pagination" onClick={() => paginate(currentPage + 1)} 
+                    disabled={!products || currentPage === Math.ceil((products.length || 0) / productsPerPage)}>
                     Next
                 </button>
             </div>
+
+            <a className="view-all" href="#">
+                XEM TẤT CẢ . SẢN PHẨM BÁN CHẠY
+            </a>
         </div>
     );
 };
