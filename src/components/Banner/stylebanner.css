@@ -1,14 +1,51 @@
 .banner-container {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    background: linear-gradient(to right, #222121, #88594c);
+  width: 100%;
+  height: 750px; /* Điều chỉnh chiều cao tùy nhu cầu */
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  overflow: hidden;
+  position: relative;
+  background-color: white; /* Màu nền giúp tránh bị khoảng trống */
+}
+
+.banner-image {
+  width: 1700px; /* Đảm bảo ảnh giữ đúng tỷ lệ */
+  height: 100%; /* Ảnh luôn đầy đủ chiều cao container */
+  object-fit: cover;
+  border-radius: 10px;
+}
+.info-section {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+  background-color: #ffffff;
+}
+.info-item {
+  flex: 1;
+  padding: 20px;
+}
+.info-item i {
+  font-size: 24px;
+  color: #999999;
+  margin-bottom: 10px;
+}
+.info-item h3 {
+  font-size: 16px;
+  color: #333333;
+  margin: 10px 0;
+}
+.info-item p {
+  font-size: 14px;
+  color: #666666;
+}
+@media (max-width: 768px) {
+  .info-section {
+      flex-direction: column;
   }
-  
-  .banner-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .info-item {
+      padding: 10px 0;
   }
-  
+}
