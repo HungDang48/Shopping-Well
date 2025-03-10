@@ -1,147 +1,178 @@
+/* Định dạng phần header */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     text-align: center;
-    /* border: 3px solid brown; */
     width: 100%;
 }
-.header {
-    font-size: 40px;
-    font-weight: bolder;
-    text-align: center;
-    font-style: italic;
-    /* border: 3px solid aqua; */
-   
-}
-/* Style cho header */
-.header {
+.header-uni {
     display: flex;
-    justify-content: space-around;
     align-items: center;
-   
+    justify-content: space-between;
+    background: linear-gradient(to right, #222121, #88594c);
+    color: white;
+    padding: 15px 20px;
+    font-size: 24px;
     font-weight: bold;
-  }
-  
-  /* Style cho các nút */
-  .header button {
-    border: #ccc;
-    width: 200px;
-    background: transparent; /* Nền trong suốt */
-    color: #000; /* Màu chữ đen */
-    padding: 10px 20px; /* Khoảng cách giữa chữ và viền */
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease; /* Hiệu ứng chuyển động mượt mà */
-    outline: none; /* Xóa viền khi nút được chọn */
-  }
-  
-  /* Style khi hover chuột vào nút */
-  .header button:hover {
-    background-color: #000; /* Thay đổi nền thành màu đen khi hover */
-    color: #fff; /* Chữ màu trắng khi hover */
-    border-color: #ffffff; /* Viền màu trắng khi hover */
-  }
-  
-.header-low {
-    font-size: 25px;
-    font-weight: bolder;
-    text-align: center;
-    font-style: italic;
-color: rgb(255, 0, 0);
-    /* border: 3px solid aqua; */
-    padding: 20px;
-    margin-bottom: 0px;
-    background-color: rgb(235, 234, 234);
 }
 
-.product-grid{
-    /* border: 2px solid blue; */
+/* Thanh tìm kiếm */
+.search-bar {
+    margin-left: 20px;
+    display: flex;
+}
+
+.search-bar input {
+    width: 300px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Container cho các nút danh mục */
+.category-button {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-evenly;
+    gap: 10px;
+    
+}
+
+/* Nút danh mục */
+button {
+    background-color: transparent; /* Làm nền trong suốt */
+    color: white; /* Đảm bảo chữ màu trắng */
+    border: 2px solid white; /* Viền trắng để dễ nhìn */
+    width: 200px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-align: center;
+    padding: 10px 20px;
+    outline: none;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hover sẽ có hiệu ứng mờ nhẹ */
+    color: #fff;
+}
+
+.header button {
+    border: #ccc;
+    width: 200px;
+    background: transparent;
+    color: white; /* Đảm bảo màu chữ là trắng */
+    padding: 10px 20px;
+    font-size: 18px; /* Tăng kích thước chữ */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+ 
+
+.product-grid {
     width: 100%;
     height: auto;
     display: flex;
     justify-content: center; 
-  align-items: center;
-    /* border: 3px solid red; */
+    align-items: center;
 }
-.container-product{
+
+.container-product {
     display: flex;
     justify-content: center; 
-  align-items: center;
-  /* border:  2px solid red; */
-  margin: 20px 30px;
-  width: auto;
-  height: auto;   
- 
-
-
+    align-items: center;
+    margin: 20px 30px;
+    width: auto;
+    height: auto;
 }
-.nav{
+
+.nav {
     padding: 20px;
     margin-bottom: 0px;
     background-color: rgb(235, 234, 234);
     font-size: 20px;
-    /* border: 3px solid black; */
     width: 100%;
-  height: auto;  
-   
-  
+    height: auto;  
 }
+
 .nav a {
     margin: 30px 15px;
     margin-left: 100px;
     justify-content: space-between;
-  
     color: black;
     font-size: 23px;
-    /* border: 2px solid red; */
 }
+
 .product-grid {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-        
 }
+
 .product {
-    margin: 20px;
-    text-align: center;
-   border: 3px solid black;
-    /* background-color:rgb(227, 228, 235); */
-    width: 370px;
-    border-radius: 5px;
-    display: inline-block;
-    border: 1px solid #ccc;
-            
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 .product img {
-    width: 300px; /* Đặt chiều rộng cố định là 300px */
-    height: 300px; /* Đặt chiều cao cố định là 300px */
-    object-fit: cover; /* Đảm bảo ảnh không bị méo và sẽ cắt phần dư thừa nếu cần */
-    border-radius: 8px; /* Bo góc ảnh để tạo hiệu ứng mềm mại */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi hover */
+    width: 90%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+     
 }
 
 .product:hover img {
-    transform: scale(1.05); /* Phóng to ảnh khi hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Thêm hiệu ứng đổ bóng khi hover */
+    transform: scale(1.08);
+    
 }
 
 .product-title {
     margin-top: 10px;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
 }
+
 .product-price {
     font-size: 18px;
     font-weight: bold;
-    color: black;
-    margin-top: 10px;
+    color: #e44d26;
+    margin: 10px 0;
 }
-.filter-button {
-    background: none;
-    border: none;
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0;
-    font-size: inherit;
+
+/* 🔹 Responsive - Hiển thị 3 sản phẩm trên hàng khi màn hình nhỏ hơn 1024px */
+@media (max-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 🔹 Responsive - Hiển thị 2 sản phẩm trên hàng khi màn hình nhỏ hơn 768px */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 🔹 Responsive - Hiển thị 1 sản phẩm trên hàng khi màn hình nhỏ hơn 480px */
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

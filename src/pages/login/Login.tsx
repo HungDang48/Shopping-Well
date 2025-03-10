@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header/Header';
+import Header from '../../components/Header/Header2';
 
 // Định nghĩa interface User
 interface User {
@@ -54,44 +54,51 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="box">
       <Header />
-      <div className="container-login">
-        <div className="container-right-login">
-          <h1 className="app-title">ĐĂNG NHẬP</h1>
+      <div className="container">
+        <div className="top-header">
+          <header>Iniciar Sesión</header>
         </div>
-        <div className="container-left-login">
-          <form onSubmit={handleSubmit}>
-            <div className="control-group-login">
-              <input
-                type="text"
-                className="login-field-login"
-                placeholder="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <label className="login-field-icon fui-user" htmlFor="email"></label>
-            </div>
-            <div className="control-group-login">
-              <input
-                type="password"
-                className="login-field"
-                placeholder="password"
-                id="login-pass"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <label className="login-field-icon fui-lock" htmlFor="login-pass"></label>
-            </div>
-            <button className="btn btn-primary btn-large btn-block" type="submit">
-              Login
-            </button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <a href="#" onClick={handleRegisterClick}>Đăng kí</a>
-          </form>
+
+        <form onSubmit={handleSubmit}>
+          <div className="input-field">
+            <input
+              type="text"
+              className="input"
+              placeholder="Usuario"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <i className="bx bx-user"></i>
+          </div>
+          <div className="input-field">
+            <input
+              type="password"
+              className="input"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <i className="bx bx-lock-alt"></i>
+          </div>
+          <div className="input-field">
+            <input type="submit" className="submit" value="Inicio" />
+          </div>
+        </form>
+
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+        <div className="bottom">
+          <div className="left">
+            <input type="checkbox" id="check" />
+            <label htmlFor="check"> Recordarme</label>
+          </div>
+          <div className="right">
+            <label><a href="#">¿Olvidaste la contraseña?</a></label>
+          </div>
         </div>
       </div>
     </div>

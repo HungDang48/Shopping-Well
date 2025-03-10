@@ -3,6 +3,7 @@ import './Register.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
+import Header2 from '../../components/Header/Header2';
 
 interface User {
   id: number;
@@ -143,7 +144,7 @@ const Register = () => {
 
   return (
     <div>
-      <Header />
+      <Header2 />
       
       <div className="register-container">
         <div className="register-container-header">

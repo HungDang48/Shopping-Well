@@ -71,7 +71,10 @@ const HeaderAdmin = () => {
                     <span>{admin.name}</span>
                     <small>{admin.role || 'Admin'}</small>
                   </div>
+                  <div className="button-admin">
                   <button onClick={handleLogout}>Đăng xuất</button>
+                  </div>
+                 
                 </>
               ) : (
                 <span>Chưa có người dùng đăng nhập</span>

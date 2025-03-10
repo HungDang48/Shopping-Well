@@ -2,6 +2,8 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+    /* background: linear-gradient(to right, #cdc6c6, #e5947d); */
+    
 }
 .navbar {
     display: flex;
@@ -125,7 +127,7 @@ body {
   }
   
   button {
-    background-color: #f44336; /* Màu đỏ */
+    
     color: white;
     border: none;
     border-radius: 5px;

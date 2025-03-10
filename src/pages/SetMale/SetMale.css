@@ -25,8 +25,8 @@
 
 /* Hình ảnh của sản phẩm */
 .product img {
-    width: 300px;         /* Chiều rộng cố định */
-    height: 400px;        /* Chiều cao cố định */
+    width: 250px;         /* Chiều rộng cố định */
+    height: 260px;        /* Chiều cao cố định */
     object-fit: cover;    /* Cắt ảnh để vừa khung, giữ tỷ lệ */
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;

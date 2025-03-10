@@ -98,10 +98,13 @@ const UniProduct: React.FC = () => {
 
     return (
         <div>
+            <div className="body-uni">
+                
+            </div>
             <div className="container-product">
                 <body>
                     <div className="nav">
-                        <div className="header">
+                        <div className="header-uni">
                             UNISEX
                             {/* Search Bar */}
                             <div className="search-bar">
@@ -128,7 +131,7 @@ const UniProduct: React.FC = () => {
                         {currentProducts.map((product) => (
                             <div className="product" key={product.id}>
                                 <Link to={`/productdetail/${product.id}`}>
-                                    <img alt={product.name} height="400" src={product.image} width="300" />
+                                    <img alt={product.name} height="200" src={product.image} width="250" />
                                     <div className="product-title">{product.name}</div>
                                     <div className="product-price">
                                         {product.price.toLocaleString('vi-VN')} VND

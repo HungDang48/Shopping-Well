@@ -1,0 +1,58 @@
+.container-open {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+    margin-top: 1px;
+    font-family: Arial, sans-serif;
+    height: 400px; /* Tăng chiều cao tổng thể */
+    background-color: #fff;
+    flex-wrap: wrap; /* Cho phép xuống dòng khi cần */
+}
+
+.image-box-open {
+    position: relative;
+    width: 550px; /* Chiều rộng cố định */
+    height: 350px; /* Chiều cao cố định */
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.image-box-open img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-box-open:hover img {
+    transform: scale(1.05);
+}
+
+.image-box-open .text {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 30px; /* Chữ to hơn */
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 12px 24px; /* Làm rõ chữ hơn */
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .container-open {
+        flex-direction: column;
+        height: auto;
+    }
+    .image-box-open {
+        width: 90%;
+        max-width: 100%;
+    }
+    .image-box-open .text {
+        font-size: 24px;
+    }
+}

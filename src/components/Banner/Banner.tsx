@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import img1 from '../img/img1.jpg';
 import img2 from '../img/img2.jpg';
 import img3 from '../img/img3.jpg';
+import './stylebanner.css'
 
 interface BannerProps {
-  images?: string[]; // Array of image paths
-  interval?: number; // Optional interval in milliseconds
+  images?: string[];
+  interval?: number;
 }
 
-const Banner: React.FC<BannerProps> = ({ images = [img1, img2, img3], interval = 3000 }) => {
+const Banner: React.FC<BannerProps> = ({ images = [img1], interval = 3000 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -20,21 +21,12 @@ const Banner: React.FC<BannerProps> = ({ images = [img1, img2, img3], interval =
   }, [images, interval]);
 
   if (images.length === 0) {
-    return <div>No image</div>;
+    return <div className="banner-container">No image</div>;
   }
 
   return (
-    <div style={{ width: '100%', height: '900px', overflow: 'hidden' }}> 
-      {/* Container with fixed height */}
-      <img
-        src={images[currentImageIndex]}
-        alt="banner"
-        style={{ 
-          width: '100%', 
-          height: '100%', 
-          objectFit: 'cover', // Ensures images are properly stretched and cropped to fit
-        }}
-      />
+    <div className="banner-container">
+      <img src={images[currentImageIndex]} alt="banner" className="banner-image" />
     </div>
   );
 };

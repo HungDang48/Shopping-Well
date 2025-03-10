@@ -1,129 +1,79 @@
-/* Điều chỉnh phần Header để nó kéo dài toàn bộ chiều ngang trang */
-.Header {
-  width: 100%;
-  display: block;
-}
-
-/* Tổng thể của container-login */
-.container-login {
-  max-width: 500px;
-  margin: 40px auto; /* Canh giữa và thêm khoảng cách từ trên */
+.container {
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 350px;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Header bên phải trong container-login */
-.container-right-login {
-  width: 100%;
+.container:hover {
+  transform: translateY(5px);
+}
+
+.top-header {
   text-align: center;
+  font-size: 24px;
+  font-weight: bold;
   margin-bottom: 20px;
 }
 
-.app-title {
-  font-size: 2em;
-  color: #333;
-  margin: 0;
-}
-
-/* Container bên trái chứa form */
-.container-left-login {
-  width: 100%;
-}
-
-/* Form đăng nhập */
-.container-left-login form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* Nhóm kiểm soát nhập liệu */
-.control-group-login {
+.input-field {
   position: relative;
+  margin-bottom: 15px;
 }
 
-/* Các trường nhập liệu */
-.login-field-login,
-.login-field {
+.input-field .input {
   width: 100%;
-  padding: 10px 40px 10px 10px; /* Để dành chỗ cho icon */
-  border: 1px solid #ddd;
+  padding: 10px;
+  padding-left: 40px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.login-field-login:focus,
-.login-field:focus {
-  border-color: #ffd700; /* Màu vàng khi focus */
   outline: none;
 }
 
-/* Icon bên trong trường nhập liệu */
-.login-field-icon {
+.input-field i {
   position: absolute;
-  right: 10px;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #888;
-  pointer-events: none;
+  color: gray;
 }
 
-/* Nút đăng nhập */
-.btn {
-  padding: 12px;
-  font-size: 1rem;
-  color: #333;
-  background-color: #ffd700; /* Màu vàng cho nút đăng nhập */
+.submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 16px;
 }
 
-.btn:hover {
-  background-color: #e6c200;
+.submit:hover {
+  background-color: #0056b3;
 }
 
-/* Thông báo lỗi */
 .error-message {
-  color: #ff4d4d;
-  font-weight: bold;
-  text-align: center;
-}
-
-/* Liên kết đăng kí */
-.container-left-login a {
-  display: block;
+  color: red;
+  font-size: 14px;
   margin-top: 10px;
-  text-align: center;
-  color: #0066cc;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.bottom a {
   text-decoration: none;
-  transition: color 0.3s;
+  color: #007bff;
 }
 
-.container-left-login a:hover {
-  color: #004999;
-}
-
-/* Responsive cho màn hình nhỏ */
-@media (max-width: 600px) {
-  .container-login {
-    margin: 20px;
-    padding: 15px;
-  }
-
-  .app-title {
-    font-size: 1.5em;
-  }
-
-  .btn {
-    padding: 10px;
-    font-size: 0.9rem;
-  }
+.bottom a:hover {
+  text-decoration: underline;
 }

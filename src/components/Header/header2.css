@@ -1,0 +1,123 @@
+/* Định dạng tổng thể */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+  }
+  
+  /* Header container */
+  .container-header {
+    /* background: linear-gradient(to right, #222121, #88594c); */
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Logo */
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2e1cf4;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  
+  .logo .text-base {
+    font-size: 14px;
+    font-weight: normal;
+    display: block;
+    color: rgba(12, 12, 12, 0.8);
+  }
+  
+  /* Navigation Links */
+ /* Navigation Links */
+.active {
+  display: flex;
+  justify-content: center; /* Căn giữa ngang */
+  align-items: center; /* Căn giữa dọc */
+  flex-grow: 1; /* Giúp phần này mở rộng đều */
+  gap: 30px; /* Khoảng cách giữa các nút */
+}
+
+.active a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease-in-out;
+  position: relative;
+  white-space: nowrap; /* Giữ chữ trên cùng một dòng */
+}
+
+  
+  .active a:hover {
+    color: #f5f5f5;
+  }
+  
+  .active a::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #fff;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .active a:hover::after {
+    transform: scaleX(1);
+  }
+  
+  /* Icons Section (chưa có icon nhưng có thể thêm vào đây) */
+  .icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icons i {
+    font-size: 20px;
+    color: #fff;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .icons i:hover {
+    color: #f5f5f5;
+  }
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auth-buttons button {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s ease
+     
+  }
+  
+  .auth-buttons button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-color: #fff;
+  }

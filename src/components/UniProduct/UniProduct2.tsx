@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './styleMaleProduct.css';
+import './UniProduct.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -25,24 +25,24 @@ export interface Category {
     updatedAt: number;
 }
 
-const MaleProduct: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+const UniProduct2: React.FC = () => {
+    const [products, setProducts] = useState<Product[]>([]); // Lưu tất cả sản phẩm
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]); // Lưu sản phẩm sau khi lọc
     const [categories, setCategories] = useState<Category[] | null>(null);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(''); // Từ khóa tìm kiếm
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const productsPerPage = 5;
+    const productsPerPage = 10;
 
-    // Fetch products (only male products, gendersID === 1)
+    // Fetch products (only unisex products, gendersID === 3)
     const fetchProducts = async () => {
         try {
             setLoading(true);
             const response = await axios.get<Product[]>('http://localhost:5000/products');
-            const filteredProducts = response.data.filter(product => product.gendersID === 1);
+            const filteredProducts = response.data.filter(product => product.gendersID === 3);
             setProducts(filteredProducts);
-            setFilteredProducts(filteredProducts);
+            setFilteredProducts(filteredProducts); // Ban đầu hiển thị tất cả sản phẩm
         } catch (error) {
             setError(error as Error);
         } finally {
@@ -50,12 +50,12 @@ const MaleProduct: React.FC = () => {
         }
     };
 
-    // Fetch categories for male products
+    // Fetch categories for unisex products
     const fetchCategories = async () => {
         try {
             setLoading(true);
             const response = await axios.get<Category[]>('http://localhost:5000/categories');
-            const filteredCategories = response.data.filter(category => category.gendersID === 1);
+            const filteredCategories = response.data.filter(category => category.gendersID === 3);
             setCategories(filteredCategories);
         } catch (error) {
             setError(error as Error);
@@ -66,20 +66,20 @@ const MaleProduct: React.FC = () => {
 
     // Search function
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const keyword = e.target.value.toLowerCase();
-        setSearchTerm(keyword);
+        const keyword = e.target.value.toLowerCase(); // Chuyển từ khóa về chữ thường
+        setSearchTerm(keyword); // Lưu từ khóa tìm kiếm
         if (!keyword) {
-            setFilteredProducts(products);
+            setFilteredProducts(products); // Nếu không có từ khóa, hiển thị tất cả sản phẩm
         } else {
             const results = products.filter(product =>
                 product.name.toLowerCase().includes(keyword)
             );
             setFilteredProducts(results);
         }
-        setCurrentPage(1);
+        setCurrentPage(1); // Reset về trang đầu tiên
     };
 
-    // Fetch data on component mount
+    // Fetch products and categories on component mount
     useEffect(() => {
         fetchProducts();
         fetchCategories();
@@ -98,12 +98,11 @@ const MaleProduct: React.FC = () => {
 
     return (
         <div>
-            <div className="body-male"></div>
             <div className="container-product">
                 <body>
                     <div className="nav">
-                        <div className="header-male">
-                            NAM
+                        <div className="header">
+                            UNISEX
                             {/* Search Bar */}
                             <div className="search-bar">
                                 <input
@@ -113,7 +112,8 @@ const MaleProduct: React.FC = () => {
                                     onChange={handleSearch}
                                 />
                             </div>
-                            {/* Render category buttons dynamically */}
+                            <div className="category-button">
+                                {/* Render category buttons dynamically */}
                             {categories && categories.map((category) => (
                                 <button
                                     key={category.id}
@@ -123,13 +123,15 @@ const MaleProduct: React.FC = () => {
                                     {category.name}
                                 </button>
                             ))}
+                            </div>
+                            
                         </div>
                     </div>
                     <div className="product-grid">
                         {currentProducts.map((product) => (
                             <div className="product" key={product.id}>
                                 <Link to={`/productdetail/${product.id}`}>
-                                    <img alt={product.name} height="200" src={product.image} width="250" />
+                                    <img alt={product.name} height="400" src={product.image} width="300" />
                                     <div className="product-title">{product.name}</div>
                                     <div className="product-price">
                                         {product.price.toLocaleString('vi-VN')} VND
@@ -138,6 +140,7 @@ const MaleProduct: React.FC = () => {
                             </div>
                         ))}
                     </div>
+
                     <div className="pagination">
                         <button
                             className="BTN-pagination"
@@ -161,4 +164,4 @@ const MaleProduct: React.FC = () => {
     );
 };
 
-export default MaleProduct;
+export default UniProduct2;

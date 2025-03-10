@@ -7,7 +7,7 @@
 
 /* Container tổng thể của lưới sản phẩm */
 .product-grid {
-    display: grid;
+    /* display: grid; */
     grid-template-columns: repeat(5, 1fr); /* 5 sản phẩm trên mỗi hàng */
     gap: 16px; /* Khoảng cách giữa các sản phẩm */
     padding: 20px;
@@ -25,8 +25,8 @@
 
 /* Hình ảnh của sản phẩm */
 .product img {
-    width: 300px;         /* Chiều rộng cố định */
-    height: 400px;        /* Chiều cao cố định */
+    width: 250px;         /* Chiều rộng cố định */
+    height: 260px;       /* Chiều cao cố định */
     object-fit: cover;    /* Cắt ảnh để vừa khung, giữ tỷ lệ */
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
