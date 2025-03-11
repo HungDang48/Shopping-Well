@@ -16,6 +16,7 @@ import ExampleComponent from '../ExampleComponent/ExampleComponent';
 import UniProduct from '../../components/UniProduct/UniProduct';
 import './homepage.css'
 import Opening from '../../components/opening/Opening';
+import UniProductPage from '../Uniproduct/UniProductPage';
 
 
 const Homepage = () => {
@@ -35,6 +36,7 @@ const Homepage = () => {
       <HotSaleProduct />
       {/* <ProductDetail /> */}
       {/* <ExampleComponent /> */}
+      {/* <UniProductPage /> */}
       
 
      
