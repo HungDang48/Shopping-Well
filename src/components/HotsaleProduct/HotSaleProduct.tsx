@@ -62,11 +62,11 @@ const HotSaleProduct: React.FC = () => {
                 SẢN PHẨM <span>BÁN CHẠY</span>
             </div>
 
-            <div className="products">
+            <div className="product-grid">
                 {currentProducts && currentProducts.map((product) => (
-                    <div 
-                        className="product" 
-                        key={product.id} 
+                    <div
+                        className="product"
+                        key={product.id}
                         onClick={() => handleProductClick(product.id)}
                     >
                         <img alt={product.name} height="300" src={product.image} width="300" />
@@ -84,7 +84,7 @@ const HotSaleProduct: React.FC = () => {
                     Previous
                 </button>
                 <span> Page {currentPage} </span>
-                <button className="BTN-pagination" onClick={() => paginate(currentPage + 1)} 
+                <button className="BTN-pagination" onClick={() => paginate(currentPage + 1)}
                     disabled={!products || currentPage === Math.ceil((products.length || 0) / productsPerPage)}>
                     Next
                 </button>

@@ -9,19 +9,49 @@ body {
 }
 .header-uni {
     display: flex;
+    flex-direction: column; /* Xếp các phần tử theo cột */
     align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(to right, #222121, #88594c);
-    color: white;
-    padding: 15px 20px;
+    justify-content: center;
+    background: white;
+    color: rgb(12, 9, 9);
+    padding: 20px;
     font-size: 24px;
     font-weight: bold;
+    text-align: center;
+    gap: 10px; /* Tạo khoảng cách giữa các phần */
+    width: 100%;
+    height: 100px;
 }
+
+.header-uni-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.header-uni-categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Để tránh tràn nội dung nếu có quá nhiều button */
+    gap: 50px;
+    width: 100%;
+}
+
+.header-uni-searchBar {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
 
 /* Thanh tìm kiếm */
 .search-bar {
     margin-left: 20px;
     display: flex;
+     
 }
 
 .search-bar input {
@@ -30,6 +60,7 @@ body {
     border: none;
     border-radius: 5px;
     font-size: 16px;
+    
 }
 
 /* Container cho các nút danh mục */
@@ -39,13 +70,14 @@ body {
     justify-content: space-evenly;
     gap: 10px;
     
+    
 }
 
 /* Nút danh mục */
 button {
     background-color: transparent; /* Làm nền trong suốt */
-    color: white; /* Đảm bảo chữ màu trắng */
-    border: 2px solid white; /* Viền trắng để dễ nhìn */
+    color: rgb(4, 1, 1); /* Đảm bảo chữ màu trắng */
+   
     width: 200px;
     height: 40px;
     border-radius: 5px;
@@ -56,11 +88,12 @@ button {
     text-align: center;
     padding: 10px 20px;
     outline: none;
+     
 }
 
 button:hover {
     background-color: rgba(255, 255, 255, 0.2); /* Hover sẽ có hiệu ứng mờ nhẹ */
-    color: #fff;
+    color: #a53939;
 }
 
 .header button {
@@ -97,7 +130,7 @@ button:hover {
 .nav {
     padding: 20px;
     margin-bottom: 0px;
-    background-color: rgb(235, 234, 234);
+    background-color: white;
     font-size: 20px;
     width: 100%;
     height: auto;  
@@ -123,6 +156,9 @@ button:hover {
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 300px;
+    height: auto;
+    margin:  20px 5px;
 }
 
 .product:hover {

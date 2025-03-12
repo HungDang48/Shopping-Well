@@ -43,9 +43,9 @@ body {
 
 /* Nút danh mục */
 button {
-    background-color: transparent; /* Làm nền trong suốt */
+    background-color: transparent; /* Làm nền trong suốt */ 
     color: white; /* Đảm bảo chữ màu trắng */
-    border: 2px solid white; /* Viền trắng để dễ nhìn */
+    
     width: 200px;
     height: 40px;
     border-radius: 5px;

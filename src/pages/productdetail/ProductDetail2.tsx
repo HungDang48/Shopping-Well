@@ -18,7 +18,7 @@ interface Product {
     updatedAt: number;
 }
 
-const ProductDetail: React.FC = () => {
+const ProductDetail2: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -134,4 +134,4 @@ const ProductDetail: React.FC = () => {
     );
 };
 
-export default ProductDetail;
+export default ProductDetail2;

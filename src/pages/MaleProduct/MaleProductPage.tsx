@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './UniProductPage.css';
+import './MaleProductPage.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Header2 from '../../components/Header/Header2';
@@ -27,7 +27,7 @@ export interface Category {
     updatedAt: number;
 }
 
-const UniProductPage: React.FC = () => {
+const MaleProductPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[] | null>(null);
@@ -40,7 +40,7 @@ const UniProductPage: React.FC = () => {
         try {
             setLoading(true);
             const response = await axios.get<Product[]>('http://localhost:5000/products');
-            const filteredProducts = response.data.filter(product => product.gendersID === 3);
+            const filteredProducts = response.data.filter(product => product.gendersID === 1);
             setProducts(filteredProducts);
             setFilteredProducts(filteredProducts);
         } catch (error) {
@@ -55,7 +55,7 @@ const UniProductPage: React.FC = () => {
         try {
             setLoading(true);
             const response = await axios.get<Category[]>('http://localhost:5000/categories');
-            const filteredCategories = response.data.filter(category => category.gendersID === 3);
+            const filteredCategories = response.data.filter(category => category.gendersID === 1);
             setCategories(filteredCategories);
         } catch (error) {
             setError(error as Error);
@@ -94,7 +94,7 @@ const UniProductPage: React.FC = () => {
                 <body>
                     <div className="nav">
                         <div className="header-uni">
-                            <div className="header-uni-title">UNISEX</div>
+                            <div className="header-uni-title">MALE</div>
                             <div className="header-uni-categories">
                                 {categories && categories.map((category) => (
                                     <button
@@ -129,4 +129,4 @@ const UniProductPage: React.FC = () => {
     );
 };
 
-export default UniProductPage;
+export default MaleProductPage;

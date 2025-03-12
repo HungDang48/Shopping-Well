@@ -24,6 +24,8 @@ import AdminAccount from '../admin/adminpages/AdminAccount/AdminAccount';
 import CategoriesAdmin from '../admin/adminpages/CategoriesAdmin/CategoriesAdmin';
 import RecommentProduct from '../components/RecommentMale/RecommentProduct';
 import UniProductPage from '../pages/Uniproduct/UniProductPage';
+import MaleProductPage from '../pages/MaleProduct/MaleProductPage';
+import FemaleProductPage from '../pages/FemaleProduct/FemaleProductPage';
 
 const RouterPages = () => {
   return (
@@ -55,6 +57,8 @@ const RouterPages = () => {
       <Route path="/CategoriesAdmin" element={<CategoriesAdmin />} />
       <Route path="/RecommentProduct" element={<RecommentProduct />} />
       <Route path="/UniProductPage" element={<UniProductPage />} />
+      <Route path='/MaleProductPage' element={<MaleProductPage />} />
+      <Route path='/FemaleProductPage' element={<FemaleProductPage />} />
    
 
     </Routes>

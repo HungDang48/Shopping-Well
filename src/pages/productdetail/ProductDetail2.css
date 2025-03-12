@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.image-section, .details-section {
+    flex: 1;
+    min-width: 300px;
+    padding: 10px;
+}
+.image-section img {
+    width: 100%;
+    height: auto;
+}
+.thumbnail-images {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.thumbnail-images img {
+    width: 18%;
+    cursor: pointer;
+}
+.details-section h1 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+.details-section .price {
+    font-size: 24px;
+    color: #ff0000;
+    margin: 10px 0;
+}
+.details-section .old-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-left: 10px;
+}
+.details-section .discount {
+    color: #888;
+    margin: 10px 0;
+}
+.details-section .status {
+    color: #28a745;
+    margin: 10px 0;
+}
+.details-section .size-options {
+    display: flex;
+    margin: 10px 0;
+}
+.details-section .size-options div {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.details-section .quantity {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.details-section .quantity button {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.details-section .quantity input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+}
+.details-section .buy-now {
+    background: #000;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin: 10px 0;
+}
+.details-section .contact {
+    margin: 10px 0;
+}
+.details-section .contact a {
+    color: #007bff;
+    text-decoration: none;
+}
+.details-section .shipping-info, .details-section .return-info {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.details-section .shipping-info i, .details-section .return-info i {
+    margin-right: 10px;
+}

@@ -1,147 +1,103 @@
-/* General styling */
-* {
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
-
-body {
-  background-color: #f4f4f4;
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
 }
-
-/* Product detail container */
-.product-detail {
+.image-section, .details-section {
+  flex: 1;
+  min-width: 300px;
+  padding: 10px;
+}
+.image-section img {
+  width: 400px;
+  height: auto;
+}
+.thumbnail-images {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
 }
-
-/* Left side - Product Image */
-.product-image-detail {
-  flex: 1;
+.thumbnail-images img {
+  width: 18%;
+  cursor: pointer;
+}
+.details-section h1 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+.details-section .price {
+  font-size: 24px;
+  color: #ff0000;
+  margin: 10px 0;
+}
+.details-section .old-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-left: 10px;
+}
+.details-section .discount {
+  color: #888;
+  margin: 10px 0;
+}
+.details-section .status {
+  color: #28a745;
+  margin: 10px 0;
+}
+.details-section .size-options {
+  display: flex;
+  margin: 10px 0;
+}
+.details-section .size-options div {
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.details-section .quantity {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-right: 20px;
+  margin: 10px 0;
 }
-
-.product-image-detail img {
-  max-width: 100%; /* Đảm bảo ảnh chiếm hết chiều rộng nhưng không vượt quá kích thước của container */
-  max-height: 400px; /* Giữ chiều cao tối đa như cũ */
-  border-radius: 10px;
+.details-section .quantity button {
+  border: 1px solid #ccc;
+  background: #0f0e0e;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 50px;
+  height: 40px;
 }
-
-/* Right side - Product Info */
-.product-info-detail {
-  flex: 1;
-  padding-left: 20px;
-}
-
-.product-name-detail {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.product-price-detail {
-  font-size: 22px;
-  color: #d9534f;
-  margin-bottom: 25px;
-}
-
-.product-quantity-detail,
-.product-color-detail {
-  margin-bottom: 20px;
-}
-
-.product-quantity-detail label,
-.product-color-detail label {
-  font-size: 16px;
-  font-weight: 500;
-  margin-right: 10px;
-}
-
-.product-quantity-detail {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.product-quantity-detail input {
-  width: 60px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.details-section .quantity input {
+  width: 50px;
   text-align: center;
-  transition: border-color 0.3s ease;
+  border: 1px solid #ccc;
+  margin: 0 5px;
 }
-
-.product-quantity-detail button {
-  background-color: #333; /* Black button */
+.details-section .buy-now {
+  background: #000;
   color: #fff;
   padding: 10px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin: 10px 0;
 }
-
-/* Hover effect for quantity buttons */
-.product-quantity-detail button:hover {
-  background-color: #555; /* Darker black on hover */
+.details-section .contact {
+  margin: 10px 0;
 }
-
-/* Product color select */
-.product-color-detail select {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  cursor: pointer;
+.details-section .contact a {
+  color: #007bff;
+  text-decoration: none;
 }
-
-/* Button styling and hover effects */
-.product-buttons-detail {
+.details-section .shipping-info, .details-section .return-info {
   display: flex;
-  gap: 15px;
-  margin-top: 30px;
+  align-items: center;
+  margin: 10px 0;
 }
-
-.product-buttons-detail button {
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Button styles */
-.add-to-cart {
-  background-color: #333; /* Black button */
-  color: #fff;
-}
-
-.add-to-cart:hover {
-  background-color: #555; /* Darker black on hover */
-}
-
-.buy-now {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.buy-now:hover {
-  background-color: #0069d9;
+.details-section .shipping-info i, .details-section .return-info i {
+  margin-right: 10px;
 }

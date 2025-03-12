@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import RecommentProduct from '../../components/RecommentMale/RecommentProduct';
+import Header2 from '../../components/Header/Header2';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
@@ -104,7 +105,7 @@ const Cart = () => {
 
   return (
     <div>
-      <Header />
+      <Header2 />
       <main>
         <div className="container">
           <div className="cart">
