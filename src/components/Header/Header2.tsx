@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './header2.css';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
+
+
+
 
 export interface CartItem {
     id: string;
@@ -46,7 +51,7 @@ const Header2 = () => {
     const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
     return (
-        <div className="container-header">
+        <div className="container-header2">
             <nav className="navbar">
                 <div className="logo">
                     SHOPPING WELL<br />
@@ -62,15 +67,19 @@ const Header2 = () => {
                 {isLoggedIn ? (
                     <>
                         <span className="icon cart-icon" onClick={handleCartClick}>
-                            🛒
+                            <FontAwesomeIcon icon={faShoppingCart} size="lg" />
                             {cartItemCount > 0 && <span className="cart-count">{cartItemCount}</span>}
                         </span>
-                        <span className="icon user-icon">👤
+
+                        <span className="icon user-icon">
+                            <FontAwesomeIcon icon={faUser} size="lg" />
                             <div className="user-menu">
                                 <a href="#" onClick={handleUserAccountClick}>Thông tin cá nhân</a>
                                 <a href="#" onClick={handleLogoutClick}>Đăng xuất</a>
                             </div>
                         </span>
+
+
                     </>
                 ) : (
                     !isAuthPage && ( // Ẩn nút Đăng nhập / Đăng ký nếu đang ở trang login hoặc register
