@@ -29,8 +29,8 @@ const Contact: React.FC = () => {
             </p>
             <p className="contact-text">
               Website:{" "}
-              <a href="https://www.kkfashion.vn" title="www.kkfashion.vn">
-                www.kkfashion.vn
+              <a href="" title="">
+               ...............
               </a>
             </p>
             <p className="contact-text">
