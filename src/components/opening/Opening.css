@@ -38,7 +38,7 @@
     color: white;
     font-size: 30px; /* Chữ to hơn */
     font-weight: bold;
-    background: rgba(0, 0, 0, 0.6);
+    background: transparent;
     padding: 12px 24px; /* Làm rõ chữ hơn */
     border-radius: 8px;
 }

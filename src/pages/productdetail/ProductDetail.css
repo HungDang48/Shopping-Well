@@ -3,16 +3,20 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+ 
 }
 .container {
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
+   
+  border: 2px solid red;
+  
 }
 .image-section, .details-section {
   flex: 1;
   min-width: 300px;
   padding: 10px;
+  margin-top: 130px;
 }
 .image-section img {
   width: 400px;

@@ -26,6 +26,9 @@ import RecommentProduct from '../components/RecommentMale/RecommentProduct';
 import UniProductPage from '../pages/Uniproduct/UniProductPage';
 import MaleProductPage from '../pages/MaleProduct/MaleProductPage';
 import FemaleProductPage from '../pages/FemaleProduct/FemaleProductPage';
+import ServicePage from '../pages/ServicePage/ServicePage';
+import Contact from '../pages/Contact/ContactPage';
+import ContactPage from '../pages/Contact/ContactPage';
 
 const RouterPages = () => {
   return (
@@ -59,6 +62,8 @@ const RouterPages = () => {
       <Route path="/UniProductPage" element={<UniProductPage />} />
       <Route path='/MaleProductPage' element={<MaleProductPage />} />
       <Route path='/FemaleProductPage' element={<FemaleProductPage />} />
+      <Route path='/ServicePage' element={<ServicePage />} />
+      <Route path='/ContactPage' element={<ContactPage />} />
    
 
     </Routes>

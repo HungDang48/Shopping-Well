@@ -5,6 +5,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import Modal from '../../admin/component/modal';
 import { axiosClient } from '../../api/axiosClient';
+import Header2 from '../../components/Header/Header2';
 
 const UserAccount = () => {
   const [userData, setUserData] = useState({
@@ -111,7 +112,7 @@ const UserAccount = () => {
 
   return (
     <div>
-      <Header />
+      <Header2 />
       <div className="profile-container-account">
         <div className="profile-card-account">
           <div className="profile-info-account">

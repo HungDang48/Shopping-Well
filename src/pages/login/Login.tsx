@@ -7,6 +7,7 @@ import Header from "../../components/Header/Header2";
 // Định nghĩa interface User
 interface User {
   id: number;
+  UserID: number; // ✅ Thêm UserID vào interface
   email: string;
   password: string;
 }
@@ -41,7 +42,11 @@ const Login = () => {
       );
 
       if (user) {
-        localStorage.setItem("userID", user.id.toString()); // Chỉ lưu ID
+        const userData = {
+          userID: user.UserID, // ✅ Đảm bảo lưu userID đúng
+          email: user.email, // ✅ Có thể cần nếu dùng sau này
+        };
+        localStorage.setItem("user", JSON.stringify(userData)); // ✅ Lưu dưới dạng object
         navigate("/HomePage"); // Chuyển hướng
       } else {
         setErrorMessage("Email hoặc mật khẩu không đúng.");

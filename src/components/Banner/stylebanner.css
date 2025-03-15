@@ -8,6 +8,7 @@
   position: relative;
   background-color: white;
   z-index: 1; /* Đảm bảo banner nằm dưới */
+  margin-top: 110px;
 }
 
 .banner-image {
