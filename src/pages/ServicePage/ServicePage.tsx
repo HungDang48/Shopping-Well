@@ -26,7 +26,7 @@ const ServicePage = () => {
                         <div className="service-card">
                             <img src="https://i.ex-cdn.com/vietnamfinance.vn/files/f1/news/thanhhang/2018/9/10/vnf-trao-doi-la-gi.jpg" alt="Dịch vụ đổi trả & hoàn tiền" className="service-img" />
                             <div className="service-overlay">
-                                <i className="fa-solid fa-money-bill-wave"></i>
+                                <i className="fas fa-undo"></i>
                                 <div className="service-text">Dịch vụ đổi trả & hoàn tiền</div>
                             </div>
                         </div>

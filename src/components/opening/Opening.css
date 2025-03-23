@@ -4,7 +4,7 @@
     align-items: center;
     gap: 35px;
     margin-top: 1px;
-    font-family: Arial, sans-serif;
+   
     height: 400px; /* Tăng chiều cao tổng thể */
     background-color: #fff;
     flex-wrap: wrap; /* Cho phép xuống dòng khi cần */

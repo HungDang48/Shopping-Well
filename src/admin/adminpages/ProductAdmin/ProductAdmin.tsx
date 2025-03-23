@@ -1,25 +1,27 @@
 import './ProductAdmin.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import Modal from '../../component/modal';
 import HeaderAdmin from '../../component/headerAdmin/HeaderAdmin';
+import { debounce } from 'lodash'; // Nhớ cài đặt lodash
+
+// Định nghĩa strict types
+type GenderID = 0 | 1 | 2 | 3;
+type ModalType = 'add' | 'update' | null;
 
 // Định nghĩa kiểu dữ liệu cho sản phẩm
-export interface Product {
+interface Product {
+    id: number;
     name: string;
     categoriesID: number;
-    size: string;
-    color: string;
-    price: number;
-    imageUrl: string;
+    gendersID: GenderID;
     newSaleID: boolean;
     hotSaleID: boolean;
-    id: number;
-    productId: string;
+    stock: Record<string, number>; // Lưu số lượng sản phẩm theo stock
+    price: number;
+    image: string;
     createdAt: number;
     updatedAt: number;
-    image: string;
-    gendersID: number;
 }
 
 interface Category {
@@ -38,37 +40,25 @@ interface FormData {
     gendersID: number;
     newSaleID: boolean;
     hotSaleID: boolean;
-    size: string;
-    color: string;
+    stock: Record<string, number>;
     price: number;
     image: string;
-    createdAt: number; // Add createdAt
-    updatedAt: number; // Add updatedAt
+    createdAt: number;
+    updatedAt: number;
 }
 
 const ProductAdmin = () => {
-
-    const [loading, setLoading] = useState<boolean>(true);
-    const [imageUrl, setImageUrl] = useState(''); // Khởi tạo state
-    const [searchTerm, setSearchTerm] = useState(''); // Từ khóa tìm kiếm
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+    // Gộp các state modal
+    const [modalType, setModalType] = useState<ModalType>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // Giữ nguyên các state khác nhưng sắp xếp gọn gàng hơn
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
     const [productsList, setProductsList] = useState<Product[] | null>(null);
     const [categoriesList, setCategoriesList] = useState<Category[] | null>(null);
     const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-
-
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const productsPerPage = 7;
-    const [productId, setProductId] = useState<number | null>(null);
-
-
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-
-    const [showPopupUpdate, setShowPopupUpdate] = useState<boolean>(false);
-    const [isEditPopupOpenUpdate, setIsEditPopupOpenUpdate] = useState(false);
-
-    const [products, setProducts] = useState<Product[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [formData, setFormData] = useState<FormData>({
         id: 0,
@@ -77,125 +67,174 @@ const ProductAdmin = () => {
         gendersID: 0,
         newSaleID: false,
         hotSaleID: false,
-        size: "",
-        color: "",
+        stock: {},
         price: 0,
         image: "",
-        createdAt: Date.now(), // Initial value for createdAt
-        updatedAt: Date.now(), // Initial value for updatedAt
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
     });
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const keyword = e.target.value.toLowerCase(); // Chuyển từ khóa về chữ thường
-        setSearchTerm(keyword); // Lưu từ khóa tìm kiếm
-        if (!keyword) {
-            setFilteredProducts(products); // Nếu không có từ khóa, hiển thị tất cả sản phẩm
-        } else {
-            const results = products.filter(product =>
-                product.name.toLowerCase().includes(keyword)
+    // Tối ưu search với debounce
+    const debouncedSearch = useCallback(
+        debounce((keyword: string) => {
+            if (!productsList) return;
+            
+            if (!keyword.trim()) {
+                setCurrentPage(1);
+                return;
+            }
+
+            const filtered = productsList.filter(product =>
+                product.name.toLowerCase().includes(keyword.toLowerCase())
             );
-            setFilteredProducts(results);
-        }
-        setCurrentPage(1); // Reset về trang đầu tiên
+            setCurrentPage(1);
+        }, 300),
+        [productsList]
+    );
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+        debouncedSearch(e.target.value);
     };
 
+    // Tối ưu pagination với useMemo
+    const { currentProducts, totalPages } = useMemo(() => {
+        if (!productsList) return { currentProducts: [], totalPages: 0 };
 
+        const indexOfLastProduct = currentPage * 7;
+        const indexOfFirstProduct = indexOfLastProduct - 7;
+        const current = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
+        const total = Math.ceil(productsList.length / 7);
 
+        return { currentProducts: current, totalPages: total };
+    }, [productsList, currentPage]);
+
+    // Tối ưu các hàm xử lý form với useCallback
+    const handleUpdateInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: ['price', 'gendersID'].includes(name) ? Number(value) : value
+        }));
+    }, []);
+
+    const handleUpdateStockChange = useCallback((size: string, value: string) => {
+        setFormData(prev => ({
+            ...prev,
+            stock: { ...prev.stock, [size]: Number(value) }
+        }));
+    }, []);
+
+    // Thêm validation
+    const validateForm = (data: FormData): string[] => {
+        const errors: string[] = [];
+        if (!data.name.trim()) errors.push('Tên sản phẩm không được để trống');
+        if (data.price <= 0) errors.push('Giá sản phẩm phải lớn hơn 0');
+        if (!data.categoriesID) errors.push('Vui lòng chọn danh mục');
+        if (!data.image.trim()) errors.push('Vui lòng nhập URL hình ảnh');
+        return errors;
+    };
+
+    // Tối ưu hàm update
+    const handleUpdate = async () => {
+        try {
+            const errors = validateForm(formData);
+            if (errors.length > 0) {
+                alert(errors.join('\n'));
+                return;
+            }
+
+            setIsSubmitting(true);
+            const response = await axios.put(
+                `http://localhost:5000/products/${formData.id}`,
+                {
+                    ...formData,
+                    updatedAt: Date.now()
+                }
+            );
+
+            if (response.status === 200) {
+                setProductsList(prevList => 
+                    prevList?.map(product => 
+                        product.id === formData.id ? response.data : product
+                    ) || []
+                );
+                alert('Cập nhật sản phẩm thành công!');
+                setModalType(null);
+            }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Có lỗi xảy ra';
+            console.error('Lỗi khi cập nhật sản phẩm:', errorMessage);
+            alert('Cập nhật sản phẩm thất bại!');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    // Tối ưu hàm delete với confirm
+    const handleDelete = async (productId: number) => {
+        if (!window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+            return;
+        }
+
+        try {
+            await axios.delete(`http://localhost:5000/products/${productId}`);
+            setProductsList((prevList) => prevList?.filter(product => product.id !== productId) || []);
+            alert('Xóa sản phẩm thành công!');
+        } catch (error) {
+            console.error("Xóa sản phẩm thất bại:", error);
+            alert('Có lỗi xảy ra khi xóa sản phẩm.');
+        }
+    };
 
     const [newProduct, setNewProduct] = useState<Partial<Product>>({
         name: '',
         categoriesID: 1,
-        size: '',
-        color: '',
-        price: 0,
-        imageUrl: '',
+        gendersID: 0,
         newSaleID: false,
         hotSaleID: false,
-        gendersID: 0, // Mặc định là 0
+        stock: {
+            M: 0, L: 0, XL: 0, XXL: 0, XXXL: 0, XXXXL: 0
+        },
+        price: 0,
+        image: '',
     });
 
     const togglePopup = () => {
-        setShowPopup(!showPopup);
+        setModalType('add');
     };
     const togglePopupUpdate = () => {
-        setShowPopupUpdate(!showPopupUpdate);
+        setModalType('update');
     };
-    const onUpdate = (productId: number) => {
-        const product = productsList?.find(item => item.id === productId);
-        if (product) {
-            setProductId(product.id); // Set id of the product to update
-            setFormData({
-                id: product.id,
-                name: product.name,
-                categoriesID: Number(product.categoriesID),
-                gendersID: product.gendersID,
-                newSaleID: product.newSaleID,
-                hotSaleID: product.hotSaleID,
-                size: product.size,
-                color: product.color,
-                price: product.price,
-                image: product.image,
-                createdAt: product.createdAt,
-                updatedAt: product.updatedAt,
-            });
-            togglePopupUpdate(); // Mở popup để chỉnh sửa
-        }
+    const onUpdate = (product: Product) => {
+        setSelectedProduct(product);
+        setFormData({
+            id: product.id,
+            name: product.name,
+            categoriesID: Number(product.categoriesID),
+            gendersID: product.gendersID,
+            newSaleID: product.newSaleID,
+            hotSaleID: product.hotSaleID,
+            stock: product.stock,
+            price: product.price,
+            image: product.image,
+            createdAt: product.createdAt,
+            updatedAt: product.updatedAt,
+        });
+        togglePopupUpdate();
     };
 
     const onCancel = () => {
-        setProductId(null);
+        setSelectedProduct(null);
         togglePopupUpdate();
     }
 
-    const toggleEditPopup = () => setIsEditPopupOpen(!isEditPopupOpen);
-
-
-    const handleEditProduct = (productId: number) => {
-        const product = products.find((p) => p.id === productId);
-        if (product) {
-            setSelectedProduct(product);
-            setIsEditPopupOpen(true);
-        }
-    };
-
-    const handleDelete = async (productId: number) => {
-        try {
-            // Gửi yêu cầu DELETE đến API để xoá người dùng
-            await axios.delete(`http://localhost:5000/products/${productId}`);
-
-            // Thông báo xoá thành công
-            alert('Xoá sản phẩm thành công!');
-
-            // Cập nhật lại danh sách người dùng sau khi xoá
-            setProductsList((prevUserList) => prevUserList?.filter(Product => Product.id !== productId) || []);
-        } catch (error) {
-            console.error("Xoá sản phẩm thất bại:", error);
-            alert('Có lỗi xảy ra khi xoá sản phẩm.');
-        }
-    };
-
-
-
-
-
-
-    const handleInputChangeUpdate = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
+    const handleStockChange = (stock: string, value: string) => {
+        setNewProduct(prev => ({
             ...prev,
-            [name]: name === 'gendersID' ? Number(value) : value, // Chuyển gendersID thành number
-            [name]: name === 'newSaleID' || name === 'hotSaleID' ? value === 'true' : value, // Chuyển đổi BooleanhandleSubmitUpdate
-
+            stock: { ...prev.stock, [stock]: Number(value) }
         }));
     };
-
-
-
-
-
-
-
-
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -204,7 +243,6 @@ const ProductAdmin = () => {
             [name]: name === 'gendersID' ? Number(value) : value, // Chuyển gendersID thành number
         }));
     };
-
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target;
@@ -229,80 +267,33 @@ const ProductAdmin = () => {
             hotSaleID: value === 'true', // 'true' sẽ được set thành Boolean true
         }));
     };
-
-    // Gửi dữ liệu sản phẩm mới
-    // Gửi dữ liệu sản phẩm mới
+   
     const handleAddProduct = async () => {
         try {
-            // Lấy ID của sản phẩm cuối cùng và cộng thêm 1
-            const newProductId = productsList && productsList.length > 0 ? productsList[productsList.length - 1].id + 1 : 1;
+            const newProductId = productsList?.length ? productsList[productsList.length - 1].id + 1 : 1;
 
-            // Tạo đối tượng sản phẩm mới với thứ tự trường theo yêu cầu
             const productWithOrderedFields = {
                 id: newProductId,
-                productId: Number(newProductId), // Chuyển thành chuỗi
                 name: newProduct.name,
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
-                categoriesID: Number(newProduct.categoriesID), // Chuyển đổi thành number
-                gendersID: newProduct.gendersID, // Sử dụng giá trị gendersID từ form
+                categoriesID: Number(newProduct.categoriesID),
+                gendersID: newProduct.gendersID,
                 newSaleID: newProduct.newSaleID,
                 hotSaleID: newProduct.hotSaleID,
-                size: newProduct.size,
-                color: newProduct.color,
+                stock: newProduct.stock,
                 price: newProduct.price,
-                image: newProduct.imageUrl, // Dùng URL ảnh đã nhập
+                image: newProduct.image,
             };
-
-            // Gửi yêu cầu POST với sản phẩm mới
             const response = await axios.post('http://localhost:5000/Products', productWithOrderedFields);
-
-            // Cập nhật danh sách sản phẩm
-            setProductsList((prev) => (prev ? [...prev, response.data] : [response.data]));
-
+            setProductsList(prev => (prev ? [...prev, response.data] : [response.data]));
             alert('Thêm sản phẩm thành công!');
-            togglePopup(); // Đóng popup
+            togglePopup();
         } catch (error) {
             console.error('Lỗi khi thêm sản phẩm:', error);
             alert('Thêm sản phẩm thất bại!');
         }
     };
-
-
-    const handleSubmitUpdate = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const updatedProduct = {
-                ...formData,
-                categoriesID: Number(formData.categoriesID), // Chuyển thành number
-                gendersID: Number(formData.gendersID), // Đảm bảo là number
-                newSaleID: Boolean(formData.newSaleID), // Đảm bảo là Boolean
-                hotSaleID: Boolean(formData.hotSaleID), // Đảm bảo là Boolean
-            };
-
-            const response = await axios.put(`http://localhost:5000/Products/${formData.id}`, updatedProduct);
-
-            const updatedProductList = (productsList || []).map((product) =>
-                product.id === formData.id ? { ...product, ...updatedProduct } : product
-            );
-
-            setProductsList(updatedProductList); // Cập nhật lại danh sách sản phẩm
-
-            alert('Sản phẩm đã được cập nhật!');
-            togglePopupUpdate(); // Đóng popup sau khi cập nhật thành công
-        } catch (error) {
-            console.error('Lỗi khi cập nhật sản phẩm:', error);
-            alert('Cập nhật sản phẩm thất bại!');
-        }
-    };
-
-
-
-
-
-
-
-
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -324,7 +315,6 @@ const ProductAdmin = () => {
                 setProductsList(response.data);
                 const categoriesResponse = await axios.get<Category[]>('http://localhost:5000/Categories');
                 setCategoriesList(categoriesResponse.data);
-                setFilteredProducts(filteredProducts);
             } catch (error) {
                 console.error('Error fetching products:', error);
             } finally {
@@ -334,10 +324,6 @@ const ProductAdmin = () => {
         fetchProducts();
     }, []);
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = productsList?.slice(indexOfFirstProduct, indexOfLastProduct);
-    const totalPages = productsList ? Math.ceil(productsList.length / productsPerPage) : 0;
     const getCategoryName = (categoriesID: number): string => {
         const category = categoriesList?.find((cat) => cat.categoriesID === categoriesID);
         return category ? category.name : 'Không xác định';
@@ -357,104 +343,77 @@ const ProductAdmin = () => {
                 <div className="product-admin-container-top">
                     <h1>DANH SÁCH SẢN PHẨM</h1>
                     <div className="search-bar">
-                                <input
-                                    placeholder="Type to search..."
-                                    type="text"
-                                    value={searchTerm}
-                                    onChange={handleSearch}
-                                />
-                            </div>
+                        <input
+                            placeholder="Type to search..."
+                            type="text"
+                            value={searchTerm}
+                            onChange={handleSearch}
+                        />
+                    </div>
                     <button className="product-admin-button-new-product" onClick={togglePopup}>
                         Thêm sản phẩm mới
                     </button>
-                    <Modal
-                        open={showPopup}
-                        onClose={togglePopup}
-                        style={{
-                            padding: '20px',
-                            backgroundColor: '#f1f1f1',
-                            borderRadius: '10px',
-                            maxWidth: '500px',
-                            width: '100%',
-                        }}
-                    >
+                    <Modal open={modalType === 'add'} onClose={togglePopup}>
                         <div className="popup-form-container">
                             <h2>Thêm sản phẩm mới</h2>
                             <form className="product-form">
-                                <label htmlFor="imageUrl">Liên kết hình ảnh:</label>
+                                <label>Liên kết hình ảnh:</label>
                                 <input
                                     type="text"
-                                    name="imageUrl"
-                                    value={imageUrl}  // Kiểm tra xem `imageUrl` có được khởi tạo và cập nhật đúng không
+                                    name="image"
+                                    value={newProduct.image}
                                     onChange={handleInputChange}
                                     placeholder="Nhập URL hình ảnh..."
                                     required
                                 />
-                                <label>
-                                    Tên sản phẩm:
-                                    <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} required />
-                                </label>
-                                <label>
-                                    Danh mục:
-                                    <select name="categoriesID" value={newProduct.categoriesID} onChange={handleCategoryChange} required>
-                                        <option value="">Chọn danh mục</option>
-                                        {categories.map((category) => (
-                                            <option key={category.id} value={category.id}>
-                                                {category.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </label>
-                                <label>
-                                    New Sale:
-                                    <select
-                                        name="newSaleID"
-                                        value={newProduct.newSaleID ? 'true' : 'false'}
-                                        onChange={handleNewSaleChange}
-                                        required
-                                    >
-                                        <option value="true">Cực mới</option>
-                                        <option value="false">Bình thường</option>
-                                    </select>
-                                </label>
-                                <label>
-                                    Hot Sale:
-                                    <select
-                                        name="hotSaleID"
-                                        value={newProduct.hotSaleID ? 'true' : 'false'}
-                                        onChange={handleHotSaleChange}
-                                        required
-                                    >
-                                        <option value="true">Hot</option>
-                                        <option value="false">Bình thường</option>
-                                    </select>
-                                </label>
-                                <label>
-                                    Gender
-                                    <select
-                                        name="gendersID"
-                                        value={newProduct.gendersID}
-                                        onChange={handleInputChange} // Cập nhật giá trị gendersID từ người dùng
-                                        required
-                                    >
-                                        <option value="0">Chọn giới tính</option>
-                                        <option value="1">NAM</option>
-                                        <option value="2">NỮ</option>
-                                        <option value="3">UNISEX</option>
-                                    </select>
-                                </label>
-                                <label>
-                                    Kích thước:
-                                    <input type="text" name="size" value={newProduct.size} onChange={handleInputChange} required />
-                                </label>
-                                <label>
-                                    Màu:
-                                    <input type="text" name="color" value={newProduct.color} onChange={handleInputChange} required />
-                                </label>
-                                <label>
-                                    Giá:
-                                    <input type="number" name="price" value={newProduct.price} onChange={handleInputChange} required />
-                                </label>
+                                <label>Tên sản phẩm:</label>
+                                <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} required />
+                                <label>Danh mục:</label>
+                                <select name="categoriesID" value={newProduct.categoriesID} onChange={handleCategoryChange} required>
+                                    <option value="">Chọn danh mục</option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <label>New Sale:</label>
+                                <select name="newSaleID" value={newProduct.newSaleID ? 'true' : 'false'} onChange={handleNewSaleChange} required>
+                                    <option value="true">Cực mới</option>
+                                    <option value="false">Bình thường</option>
+                                </select>
+                                <label>Hot Sale:</label>
+                                <select name="hotSaleID" value={newProduct.hotSaleID ? 'true' : 'false'} onChange={handleHotSaleChange} required>
+                                    <option value="true">Hot</option>
+                                    <option value="false">Bình thường</option>
+                                </select>
+                                <label>Giới tính:</label>
+                                <select name="gendersID" value={newProduct.gendersID} onChange={handleInputChange} required>
+                                    <option value="0">Chọn giới tính</option>
+                                    <option value="1">NAM</option>
+                                    <option value="2">NỮ</option>
+                                    <option value="3">UNISEX</option>
+                                </select>
+                                <label>Giá sản phẩm:</label>
+                                <input
+                                    type="number"
+                                    name="price"
+                                    value={newProduct.price}
+                                    onChange={handleInputChange}
+                                    placeholder="Nhập giá sản phẩm..."
+                                    required
+                                />
+                                <label>Tồn kho:</label>
+                                {Object.keys(newProduct.stock || {}).map(stock => (
+                                    <div key={stock}>
+                                        <label>{stock}:</label>
+                                        <input
+                                            type="number"
+                                            value={newProduct.stock?.[stock] || 0}
+                                            onChange={(e) => handleStockChange(stock, e.target.value)}
+                                        />
+                                    </div>
+                                ))}
                                 <div className="popup-buttons">
                                     <button type="button" className="submit-button" onClick={handleAddProduct}>
                                         Thêm sản phẩm
@@ -467,7 +426,6 @@ const ProductAdmin = () => {
                         </div>
                     </Modal>
                 </div>
-
                 {/* Product Table */}
                 <div className="product-admin-container-bottom">
                     {loading ? (
@@ -481,147 +439,45 @@ const ProductAdmin = () => {
                                         <th>Hình ảnh</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Danh mục</th>
-                                        <th>Size</th>
-                                        <th>Color</th>
+                                        <th>Stock</th>
                                         <th>Giá</th>
                                         <th>New Sale</th>
                                         <th>Hot Sale</th>
-                                        <th>gendersID</th>
+                                        <th>Giới tính</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentProducts.map((products, index) => (
-                                        <tr key={products.id}>
+                                    {currentProducts.map((product, index) => (
+                                        <tr key={product.id}>
                                             <td>{index + 1}</td>
                                             <td>
-                                                <img src={products.image} alt={products.name} style={{ width: 80, height: 80 }} />
+                                                <img src={product.image} alt={product.name} style={{ width: 80, height: 80 }} />
                                             </td>
-                                            <td>{products.name}</td>
-                                            <td>{getCategoryName(products.categoriesID)}</td>
-                                            <td>{products.size}</td>
-                                            <td>{products.color}</td>
-                                            <td>{products.price} vnd</td>
-                                            <td>{products.newSaleID ? 'Cực mới' : 'Bình thường'}</td>
-                                            <td>{products.hotSaleID ? 'Hot' : 'Bình thường'}</td>
-                                            <td>{products.gendersID}</td>
+                                            <td>{product.name}</td>
+                                            <td>{getCategoryName(product.categoriesID)}</td>
                                             <td>
-                                                <button className="user-account-button-new-account" onClick={() => onUpdate(products.id)}  >
+                                                {Object.entries(product.stock)
+                                                    .map(([stock, quantity]) => `${stock}: ${quantity}`)
+                                                    .join(', ')}
+                                            </td>
+                                            <td>{product.price} vnd</td>
+                                            <td>{product.newSaleID ? 'Cực mới' : 'Bình thường'}</td>
+                                            <td>{product.hotSaleID ? 'Hot' : 'Bình thường'}</td>
+                                            <td>{product.gendersID}</td>
+                                            <td>
+                                                <button className="user-account-button-new-account" onClick={() => onUpdate(product)}>
                                                     UPDATE
                                                 </button>
-                                                <Modal
-                                                    open={showPopupUpdate}
-                                                    onClose={togglePopupUpdate}
-                                                    style={{
-                                                        padding: '20px',
-                                                        backgroundColor: '#f1f1f1',
-                                                        borderRadius: '10px',
-                                                        maxWidth: '500px',
-                                                        width: '100%',
-                                                    }}
-                                                >
-                                                    <div className="popup-form-container">
-                                                        <h2>UPDATE SẢN PHẨM</h2>
-                                                        <form className="product-form" onSubmit={handleSubmitUpdate}>
-                                                            <label htmlFor="imageUrl">Liên kết hình ảnh:</label>
-                                                            <input
-                                                                type="url"
-                                                                id="imageUrl"
-                                                                name="imageUrl"
-                                                                value={formData.image}
-                                                                onChange={handleInputChangeUpdate}
-                                                                placeholder="Nhập URL hình ảnh..."
-                                                                required
-                                                            />
-                                                            <label>
-                                                                Tên sản phẩm:
-                                                                <input type="text" name="name" value={formData.name} onChange={handleInputChangeUpdate} required />
-                                                            </label>
-                                                            <label>
-                                                                Danh mục:
-                                                                <select name="categoriesID" value={formData.categoriesID} onChange={handleInputChangeUpdate} required>
-                                                                    <option value="">Chọn danh mục</option>
-                                                                    {categories.map((category) => (
-                                                                        <option key={category.id} value={category.id}>
-                                                                            {category.name}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            </label>
-                                                            <label>
-                                                                New Sale:
-                                                                <select
-                                                                    name="newSaleID"
-                                                                    value={formData.newSaleID ? 'true' : 'false'}
-                                                                    onChange={handleInputChangeUpdate}
-                                                                    required
-                                                                >
-                                                                    <option value="true">Cực mới</option>
-                                                                    <option value="false">Bình thường</option>
-                                                                </select>
-
-                                                            </label>
-                                                            <label>
-                                                                Hot Sale:
-                                                                <select
-                                                                    name="hotSaleID"
-                                                                    value={formData.hotSaleID ? 'true' : 'false'}
-                                                                    onChange={handleInputChangeUpdate}
-                                                                    required
-                                                                >
-                                                                    <option value="true">Hot</option>
-                                                                    <option value="false">Bình thường</option>
-                                                                </select>
-                                                            </label>
-                                                            <label>
-                                                                Kích thước:
-                                                                <input type="text" name="size" value={formData.size} onChange={handleInputChangeUpdate} required />
-                                                            </label>
-                                                            <label>
-                                                                Màu:
-                                                                <input type="text" name="color" value={formData.color} onChange={handleInputChangeUpdate} required />
-                                                            </label>
-                                                            <label>
-                                                                Giá:
-                                                                <input type="number" name="price" value={formData.price} onChange={handleInputChangeUpdate} required />
-                                                            </label>
-                                                            {/* Gender */}
-                                                            <label>
-                                                                Giới tính:
-                                                                <select
-                                                                    name="gendersID"
-                                                                    value={formData.gendersID}
-                                                                    onChange={handleInputChangeUpdate}
-                                                                    required
-                                                                >
-                                                                    <option value="0">Chọn giới tính</option>
-                                                                    <option value="1">NAM</option>
-                                                                    <option value="2">NỮ</option>
-                                                                    <option value="3">UNISEX</option>
-                                                                </select>
-                                                            </label>
-                                                            <div className="popup-buttons">
-                                                                <button type="submit" className="submit-button">
-                                                                    UPDATE SẢN PHẨM
-                                                                </button>
-                                                                <button type="button" className="cancel-button" onClick={togglePopup}>
-                                                                    Hủy
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </Modal>
-
-                                                <button className="red" onClick={() => handleDelete(products.id)}>
+                                                <button className="red" onClick={() => handleDelete(product.id)}>
                                                     Xóa Bỏ
                                                 </button>
-
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
-                            {/* Phân trang */}
+                            {/* Pagination */}
                             <div className="pagination">
                                 <button disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)}>
                                     Trước
@@ -639,9 +495,85 @@ const ProductAdmin = () => {
                     )}
                 </div>
             </div>
+            
+            {/* Tối ưu Modal với điều kiện render */}
+            {modalType === 'update' && (
+                <Modal open={true} onClose={onCancel}>
+                    <div className="popup-form-container">
+                        <h2>Cập nhật sản phẩm</h2>
+                        <form className="product-form">
+                            <label>Liên kết hình ảnh:</label>
+                            <input
+                                type="text"
+                                name="image"
+                                value={formData.image}
+                                onChange={handleUpdateInputChange}
+                                placeholder="Nhập URL hình ảnh..."
+                                required
+                            />
+                            <label>Tên sản phẩm:</label>
+                            <input type="text" name="name" value={formData.name} onChange={handleUpdateInputChange} required />
+                            <label>Danh mục:</label>
+                            <select name="categoriesID" value={formData.categoriesID} onChange={handleUpdateInputChange} required>
+                                <option value="">Chọn danh mục</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <label>New Sale:</label>
+                            <select name="newSaleID" value={formData.newSaleID ? 'true' : 'false'} onChange={handleUpdateInputChange} required>
+                                <option value="true">Cực mới</option>
+                                <option value="false">Bình thường</option>
+                            </select>
+                            <label>Hot Sale:</label>
+                            <select name="hotSaleID" value={formData.hotSaleID ? 'true' : 'false'} onChange={handleUpdateInputChange} required>
+                                <option value="true">Hot</option>
+                                <option value="false">Bình thường</option>
+                            </select>
+                            <label>Giới tính:</label>
+                            <select name="gendersID" value={formData.gendersID} onChange={handleUpdateInputChange} required>
+                                <option value="0">Chọn giới tính</option>
+                                <option value="1">NAM</option>
+                                <option value="2">NỮ</option>
+                                <option value="3">UNISEX</option>
+                            </select>
+                            <label>Giá sản phẩm:</label>
+                            <input
+                                type="number"
+                                name="price"
+                                value={formData.price}
+                                onChange={handleUpdateInputChange}
+                                placeholder="Nhập giá sản phẩm..."
+                                required
+                            />
+                            <label>Tồn kho:</label>
+                            {Object.keys(formData.stock || {}).map(stock => (
+                                <div key={stock}>
+                                    <label>{stock}:</label>
+                                    <input
+                                        type="number"
+                                        value={formData.stock?.[stock] || 0}
+                                        onChange={(e) => handleUpdateStockChange(stock, e.target.value)}
+                                    />
+                                </div>
+                            ))}
+                            <div className="popup-buttons">
+                                <button type="button" className="submit-button" onClick={handleUpdate}>
+                                    Cập nhật
+                                </button>
+                                <button type="button" className="cancel-button" onClick={onCancel}>
+                                    Hủy
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </Modal>
+            )}
         </div>
-
     );
+
 };
 
 export default ProductAdmin;

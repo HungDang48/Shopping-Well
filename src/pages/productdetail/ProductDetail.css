@@ -1,107 +1,189 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
- 
+  font-family: Arial, sans-serif;
 }
+
 .container {
   display: flex;
   flex-wrap: wrap;
-   
-  border: 2px solid red;
-  
+  gap: 20px;
+  background-color:white;
 }
+
 .image-section, .details-section {
   flex: 1;
   min-width: 300px;
-  padding: 10px;
-  margin-top: 130px;
+  padding: 1rem;
+  margin-top: 8rem;
 }
+
 .image-section img {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: auto;
+  border-radius: 10px;
 }
+
 .thumbnail-images {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 0.5rem;
 }
+
 .thumbnail-images img {
   width: 18%;
   cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
 }
+
+.thumbnail-images img:hover {
+  transform: scale(1.1);
+}
+
 .details-section h1 {
-  font-size: 24px;
-  margin: 10px 0;
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
 }
+
 .details-section .price {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #ff0000;
-  margin: 10px 0;
+  margin: 0.5rem 0;
 }
+
 .details-section .old-price {
   text-decoration: line-through;
   color: #888;
-  margin-left: 10px;
+  margin-left: 0.5rem;
 }
+
 .details-section .discount {
   color: #888;
-  margin: 10px 0;
+  margin: 0.5rem 0;
 }
+
 .details-section .status {
-  color: #28a745;
-  margin: 10px 0;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: 5px;
+  display: inline-block;
 }
+ 
+
 .details-section .size-options {
   display: flex;
-  margin: 10px 0;
+  gap: 10px;
+  margin: 1rem 0;
 }
+
 .details-section .size-options div {
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  margin-right: 5px;
+  border: 1px solid #000;
+  padding: 0.5rem;
+  width: 8.5rem;
+  height: 2.5rem;
+  text-align: center;
   cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
+
+.details-section .size-options div:hover {
+  background: #000000;
+  color: #fff;
+  transform: scale(1.1);
+   
+}
+
 .details-section .quantity {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin: 1rem 0;
 }
+
 .details-section .quantity button {
-  border: 1px solid #ccc;
-  background: #0f0e0e;
-  padding: 5px 10px;
+  background: #f2ecec;
+  padding: 0.5rem;
   cursor: pointer;
-  width: 50px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+  border-radius: 50%;
 }
+
+.details-section .quantity button:hover {
+  background: #ddd;
+}
+
 .details-section .quantity input {
-  width: 50px;
+  width: 2.5rem;
   text-align: center;
   border: 1px solid #ccc;
-  margin: 0 5px;
+  margin: 0 0.5rem;
 }
+
 .details-section .buy-now {
   background: #000;
   color: #fff;
-  padding: 10px;
+  padding: 1rem;
   text-align: center;
   cursor: pointer;
-  margin: 10px 0;
+  margin: 1rem 0;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
+
+.details-section .buy-now:hover {
+  background: #444;
+  transform: scale(1.05);
+}
+
 .details-section .contact {
-  margin: 10px 0;
+  margin: 1rem 0;
 }
+
 .details-section .contact a {
   color: #007bff;
   text-decoration: none;
+  
 }
-.details-section .shipping-info, .details-section .return-info {
+
+.details-section .shipping-info, 
+.details-section .return-info {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin: 1rem 0;
 }
-.details-section .shipping-info i, .details-section .return-info i {
-  margin-right: 10px;
+
+.details-section .shipping-info i, 
+.details-section .return-info i {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
 }
+.size-button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+
+.size-selected {
+  background-color: #000000;
+  color: white;
+  border: 2px solid #000000; /* Viền vàng nổi bật */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8); /* Hiệu ứng phát sáng nhẹ */
+}
+
+.size-disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+ 
+
