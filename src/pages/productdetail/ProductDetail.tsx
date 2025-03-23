@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import './ProductDetail.css';
 import Header2 from "../../components/Header/Header2";
 import Footer from "../../components/Footer/Footer";
@@ -49,14 +49,31 @@ const useProduct = (id: string | undefined) => {
 
 // Custom hook for cart management
 const useCart = () => {
+    const navigate = useNavigate();
+
     const addToCart = (product: Product, selectedSize: string, quantity: number) => {
+        // Kiểm tra user đã đăng nhập chưa
+        const user = localStorage.getItem('user');
+        if (!user) {
+            if (window.confirm('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng. Đến trang đăng nhập?')) {
+                navigate('/login');
+            }
+            return false;
+        }
+
         const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
         const existingIndex = cartItems.findIndex(
             (item: any) => item.id === product.id && item.size === selectedSize
         );
 
         if (existingIndex !== -1) {
-            cartItems[existingIndex].quantity += quantity;
+            // Kiểm tra số lượng tồn kho trước khi cộng thêm
+            const newQuantity = cartItems[existingIndex].quantity + quantity;
+            if (newQuantity > product.stock[selectedSize]) {
+                alert(`Chỉ còn ${product.stock[selectedSize]} sản phẩm trong kho!`);
+                return false;
+            }
+            cartItems[existingIndex].quantity = newQuantity;
         } else {
             cartItems.push({
                 id: product.id,
@@ -69,6 +86,7 @@ const useCart = () => {
         }
 
         localStorage.setItem("cart", JSON.stringify(cartItems));
+        return true;
     };
 
     return { addToCart };
@@ -127,6 +145,7 @@ const ProductDetail: React.FC = () => {
         maxQuantityMessage,
         setMaxQuantityMessage
     } = useProductSelection(product);
+    const navigate = useNavigate();
 
     if (loading) return (
         <div className="loading-container">
@@ -158,8 +177,16 @@ const ProductDetail: React.FC = () => {
             return;
         }
 
-        addToCart(product, selectedSize, quantity);
-        alert("Sản phẩm đã được thêm vào giỏ hàng!");
+        // Kiểm tra số lượng tồn kho
+        if (quantity > product.stock[selectedSize]) {
+            alert(`Chỉ còn ${product.stock[selectedSize]} sản phẩm trong kho!`);
+            return;
+        }
+
+        const success = addToCart(product, selectedSize, quantity);
+        if (success) {
+            alert("Sản phẩm đã được thêm vào giỏ hàng!");
+        }
     };
 
     return (
