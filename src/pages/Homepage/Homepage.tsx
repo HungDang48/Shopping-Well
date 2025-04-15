@@ -12,7 +12,7 @@ import CardProduct from '../../modules/home/components/CardProduct';
 import ProductDetail from '../productdetail/ProductDetail';
 import Login from '../login/Login';
 import Register from '../register/Register';
-import ExampleComponent from '../ExampleComponent/ExampleComponent';
+ 
 import UniProduct from '../../components/UniProduct/UniProduct';
 import './homepage.css'
 import Opening from '../../components/opening/Opening';
@@ -35,7 +35,7 @@ const Homepage = () => {
       {/* <NewProduct /> */}
       <HotSaleProduct />
       {/* <ProductDetail /> */}
-      {/* <ExampleComponent /> */}
+      
       {/* <UniProductPage /> */}
       
 

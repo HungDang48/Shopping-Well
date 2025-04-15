@@ -24,7 +24,7 @@ h1 {
 
 /* Button Tạo Tài Khoản */
 .user-account-button-new-account {
-  
+
     color: white;
     font-size: 16px;
     padding: 10px 20px;
@@ -32,6 +32,7 @@ h1 {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    height: 40px;
 }
 
 .user-account-button-new-account:hover {

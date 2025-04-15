@@ -204,6 +204,7 @@
 .action-detail-button {
   background-color: #ffc107; /* Màu nền vàng */
   color: #333; /* Màu chữ tối */
+  margin-bottom: 10px;
 }
 
 .action-detail-button:hover {

@@ -78,8 +78,7 @@ body {
 button {
     background-color: transparent; /* Làm nền trong suốt */
     color: rgb(4, 1, 1); /* Đảm bảo chữ màu trắng */
-   
-    width: 200px;
+    width: 150px;
     height: 40px;
     border-radius: 5px;
     cursor: pointer;

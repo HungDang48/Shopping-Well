@@ -119,8 +119,8 @@ const CategoriesAdmin = () => {
             <HeaderAdmin />
             <div className="categories-container">
                 <h1>Quản lý danh mục sản phẩm</h1>
-                <button className="categories-admin-button-new-categories" onClick={togglePopup}>
-                    Tạo danh mục mới
+                <button className="categories-admin-button-new-categories" onClick={togglePopup} style={{ height: "40px", width: "180px" }}>
+                    Tạo danh mục  
                 </button>
 
                 <Modal

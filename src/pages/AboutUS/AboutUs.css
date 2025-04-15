@@ -1,0 +1,118 @@
+ 
+.container {
+    display: flex;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 100PX;
+}
+.left-section {
+    background-color: #e9ecef;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.left-section .experience {
+    background-color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.left-section .experience h2 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: bold;
+}
+.left-section .experience p {
+    margin: 0;
+    font-size: 14px;
+    color: #666666;
+}
+.left-section .vertical-text {
+    position: absolute;
+    left: -50px;
+    top: 50%;
+    transform: rotate(-90deg);
+    transform-origin: left top 0;
+    font-size: 14px;
+    color: #dc3545;
+    font-weight: bold;
+}
+.left-section img {
+    max-width: 100%;
+    height: auto;
+}
+.right-section {
+    padding: 20px;
+    max-width: 400px;
+}
+.right-section button {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.right-section h1 {
+    font-size: 24px;
+    margin: 0 0 20px 0;
+}
+.right-section p {
+    font-size: 14px;
+    color: #666666;
+    margin: 0 0 20px 0;
+}
+.right-section .services {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.right-section .services div {
+    display: flex;
+    align-items: center;
+}
+.right-section .services div i {
+    margin-right: 10px;
+}
+.right-section .features {
+    margin-bottom: 20px;
+}
+.right-section .features p {
+    display: flex;
+    align-items: center;
+    margin: 0 0 10px 0;
+}
+.right-section .features p i {
+    margin-right: 10px;
+    color: #000000;
+}
+.right-section .author {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666666;
+}
+.right-section .author span {
+    margin-left: 10px;
+    color: #000000;
+}
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .left-section {
+        align-items: stretch;
+    }
+    .left-section .vertical-text {
+        left: 10px;
+        top: auto;
+        bottom: 10px;
+        transform: rotate(0);
+        transform-origin: left bottom 0;
+    }
+}

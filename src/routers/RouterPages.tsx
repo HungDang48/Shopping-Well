@@ -29,6 +29,7 @@ import FemaleProductPage from '../pages/FemaleProduct/FemaleProductPage';
 import ServicePage from '../pages/ServicePage/ServicePage';
 import Contact from '../pages/Contact/ContactPage';
 import ContactPage from '../pages/Contact/ContactPage';
+import AboutUs from '../pages/AboutUS/AboutUs';
 
 const RouterPages = () => {
   return (
@@ -64,7 +65,7 @@ const RouterPages = () => {
       <Route path='/FemaleProductPage' element={<FemaleProductPage />} />
       <Route path='/ServicePage' element={<ServicePage />} />
       <Route path='/ContactPage' element={<ContactPage />} />
-   
+      <Route path='/AboutUs' element={<AboutUs />} />
 
     </Routes>
   );

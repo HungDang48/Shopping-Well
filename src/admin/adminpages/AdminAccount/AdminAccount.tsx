@@ -189,8 +189,8 @@ const AdminAccount = () => {
         <div className="admin-Account-container-top">
 
           <h1>DANH SÁCH TÀI KHOẢN ADMIN</h1>
-          <button className="admin-Account-button-new-account" onClick={togglePopup}>
-            Tạo Tài Khoản Mới
+          <button className="admin-Account-button-new-account" onClick={togglePopup} style={{ height: "40px", width: "180px" }}>
+            Tạo Tài Khoản  
           </button>
 
           <Modal

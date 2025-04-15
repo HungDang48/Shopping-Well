@@ -1,114 +1,165 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './UserAccount.css';
-import Header from '../../components/Header/Header';
+import Header2 from '../../components/Header/Header2';
 import Footer from '../../components/Footer/Footer';
 import Modal from '../../admin/component/modal';
 import { axiosClient } from '../../api/axiosClient';
-import Header2 from '../../components/Header/Header2';
+
+interface User {
+  id: number;
+  UserID: number;
+  name: string;
+  username: string;
+  email: string;
+  birthday: string;
+  gender: string;
+  password: string;
+  createdAt: number;
+  updatedAt: number;
+  birthDate: string;
+}
+
+interface LocalUser {
+  userID: number;
+}
 
 const UserAccount = () => {
-  const [userData, setUserData] = useState({
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState<User>({
+    id: 0,
+    UserID: 0,
     name: '',
     username: '',
     email: '',
     birthday: '',
     gender: '',
     password: '',
+    createdAt: 0,
+    updatedAt: 0,
+    birthDate: ''
   });
 
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
-  // Mới thay đổi: Thêm các state cho các trường thông tin cá nhân
   const [updatedName, setUpdatedName] = useState('');
   const [updatedUsername, setUpdatedUsername] = useState('');
   const [updatedBirthday, setUpdatedBirthday] = useState('');
   const [updatedGender, setUpdatedGender] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Hàm gọi API để lấy thông tin người dùng
   const fetchUserData = async () => {
-    const userId_local: any = localStorage.getItem('user');
-    const datauser = JSON.parse(userId_local);
-
-    if (userId_local) {
-      try {
-        const response = await axiosClient.get(`/User/${datauser?.id}`);
-        const user = response.data;
-        setUserData(user);
-        setUpdatedName(user.name);
-        setUpdatedUsername(user.username);
-        setUpdatedBirthday(user.birthday);
-        setUpdatedGender(user.gender);
-      } catch (error) {
-        console.error('Có lỗi khi gọi API:', error);
+    try {
+      const userDataString = localStorage.getItem('user');
+      if (!userDataString) {
+        alert('Vui lòng đăng nhập để xem thông tin');
+        navigate('/login');
+        return;
       }
-    } else {
-      console.log('Không tìm thấy UserID trong localStorage');
-      // window.location.href = "/login"; // Chuyển hướng nếu cần
+
+      const localUser = JSON.parse(userDataString) as LocalUser;
+      console.log("Local user data:", localUser);
+
+      const response = await axiosClient.get<User[]>('/User');
+      const users = response.data;
+      console.log("API response:", users);
+
+      const matchedUser = users.find((user: User) => user.UserID === localUser.userID);
+      console.log("Matched user:", matchedUser);
+
+      if (matchedUser) {
+        setUserData(matchedUser);
+        setUpdatedName(matchedUser.name || '');
+        setUpdatedUsername(matchedUser.username || '');
+        setUpdatedBirthday(matchedUser.birthday || '');
+        setUpdatedGender(matchedUser.gender || '');
+      } else {
+        throw new Error('Không tìm thấy thông tin người dùng');
+      }
+
+    } catch (error) {
+      console.error('Lỗi khi lấy thông tin:', error);
+      alert('Không thể lấy thông tin người dùng');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Sử dụng useEffect để gọi API khi component render
   useEffect(() => {
     fetchUserData();
   }, []);
 
-  // Hàm xử lý thay đổi thông tin cá nhân
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Kiểm tra mật khẩu hiện tại có đúng không
-    if (currentPassword !== userData.password) {
-      alert('Mật khẩu hiện tại không đúng!');
-      return;
-    }
-  
-    // Kiểm tra mật khẩu mới và xác nhận mật khẩu có khớp
-    if (newPassword !== confirmPassword) {
-      alert('Mật khẩu mới và xác nhận không khớp!');
-      return;
-    }
-  
+    setIsLoading(true);
+
     try {
-      const userId_local: any = localStorage.getItem('user');
-      const datauser = JSON.parse(userId_local);
-  
-      if (!datauser?.id) {
-        alert('Không tìm thấy thông tin người dùng!');
+      const userDataString = localStorage.getItem('user');
+      if (!userDataString) {
+        alert('Vui lòng đăng nhập lại!');
         return;
       }
-  
-      // Gửi yêu cầu cập nhật thông tin người dùng qua API
-      const response = await axiosClient.put(`/User/${datauser.id}`, {
+
+      const localUser = JSON.parse(userDataString) as LocalUser;
+
+      // Tạo object chứa thông tin cập nhật theo đúng format API
+      const updateData = {
+        id: userData.id,
+        UserID: userData.UserID,
         name: updatedName,
         username: updatedUsername,
+        email: userData.email,
         birthday: updatedBirthday,
-        gender: updatedGender,
-        password: newPassword || userData.password,  // Chỉ thay đổi mật khẩu nếu có
-        email: userData.email, // Giữ nguyên email
-      });
-  
+        birthDate: updatedBirthday,
+        gender: updatedGender.toLowerCase(),
+        password: userData.password,
+        createdAt: userData.createdAt,
+        updatedAt: Date.now()
+      };
+
+      // Chỉ thêm password vào nếu người dùng nhập mật khẩu mới
+      if (newPassword) {
+        // Kiểm tra mật khẩu hiện tại nếu muốn đổi mật khẩu
+        if (currentPassword !== userData.password) {
+          alert('Mật khẩu hiện tại không đúng!');
+          setIsLoading(false);
+          return;
+        }
+
+        // Kiểm tra mật khẩu mới và xác nhận
+        if (newPassword !== confirmPassword) {
+          alert('Mật khẩu mới và xác nhận không khớp!');
+          setIsLoading(false);
+          return;
+        }
+
+        updateData.password = newPassword;
+      }
+
+      // Gọi API cập nhật với endpoint đúng
+      const response = await axiosClient.put(`/User/${userData.id}`, updateData);
+
       if (response.status === 200) {
-        alert('Thông tin đã được cập nhật thành công!');
+        alert('Cập nhật thông tin thành công!');
         setShowProfileModal(false);
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
-        
-        // Tự động reload trang sau khi cập nhật thành công
-        window.location.reload(); // Reload lại trang để hiển thị thông tin mới
-      } else {
-        throw new Error('Cập nhật thông tin thất bại!');
+        fetchUserData(); // Refresh data
       }
     } catch (error) {
-      console.error('Có lỗi khi cập nhật thông tin:', error);
+      console.error('Lỗi khi cập nhật:', error);
       alert('Có lỗi xảy ra, vui lòng thử lại!');
+    } finally {
+      setIsLoading(false);
     }
   };
-  
+
+  if (isLoading) {
+    return <div className="loading">Đang tải thông tin...</div>;
+  }
 
   return (
     <div>
@@ -136,10 +187,6 @@ const UserAccount = () => {
               <label>Giới Tính:</label>
               <span>{userData.gender}</span>
             </div>
-            <div className="info-row-account">
-              <label>Mật khẩu:</label>
-              <span>********</span>
-            </div>
           </div>
           <div className="profile-change-account">
             <button
@@ -151,7 +198,6 @@ const UserAccount = () => {
           </div>
         </div>
 
-        {/* Modal thay đổi thông tin cá nhân */}
         <Modal
           open={showProfileModal}
           onClose={() => setShowProfileModal(false)}
@@ -203,32 +249,52 @@ const UserAccount = () => {
                 <option value="Other">Khác</option>
               </select>
             </div>
-            <div>
-              <label>Mật khẩu hiện tại:</label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-              />
+            
+            {/* Phần đổi mật khẩu - không bắt buộc */}
+            <div className="password-change-section">
+                <h4>Đổi mật khẩu (không bắt buộc)</h4>
+                <div>
+                    <label>Mật khẩu hiện tại:</label>
+                    <input
+                        type="password"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label>Mật khẩu mới:</label>
+                    <input
+                        type="password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label>Xác nhận mật khẩu mới:</label>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </div>
             </div>
-            <div>
-              <label>Mật khẩu mới:</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
+
+            <div className="form-actions">
+                <button 
+                    type="submit" 
+                    className="submit-btn"
+                    disabled={isLoading}
+                >
+                    {isLoading ? 'Đang cập nhật...' : 'Cập nhật thông tin'}
+                </button>
+                <button 
+                    type="button" 
+                    className="cancel-btn" 
+                    onClick={() => setShowProfileModal(false)}
+                >
+                    Hủy
+                </button>
             </div>
-            <div>
-              <label>Xác nhận mật khẩu mới:</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-            <button type="submit">Cập nhật thông tin</button>
           </form>
         </Modal>
       </div>

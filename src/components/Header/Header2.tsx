@@ -50,6 +50,7 @@ const Header2 = () => {
     const handleContactClick = () => navigate('/ContactPage');
     const handleCartClick = () => navigate('/cart');
     const handleUserAccountClick = () => navigate('/userAccount');
+    const handleAboutUsClick = () => navigate('/AboutUs');
 
     const handleLogoutClick = () => {
         localStorage.removeItem('user');
@@ -80,7 +81,7 @@ const Header2 = () => {
                 <div className="active">
                     <a href="#" onClick={handleHomePageClick}>TRANG CHỦ</a>
                     <a href="#"onClick={handleHomeServiceClick}>DỊCH VỤ</a>
-                    <a href="#">TIN TỨC</a>
+                    <a href="#" onClick={handleAboutUsClick}>VỀ CHÚNG TÔI</a>
                     <a href="#" onClick={handleContactClick}>LIÊN HỆ</a>
                     <a href="#" onClick={handleHomeAdminClick}>TRANG ADMIN</a>
                 </div>

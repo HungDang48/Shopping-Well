@@ -243,8 +243,8 @@ const UserAccount: React.FC = () => {
             <div className="user-account-container">
                 <div className="user-account-container-top">
                     <h1>DANH SÁCH TÀI KHOẢN</h1>
-                    <button className="user-account-button-new-account" onClick={togglePopup}>
-                        Tạo Tài Khoản Mới
+                    <button className="user-account-button-new-account" onClick={togglePopup}  style={{ height: "40px", width: "180px" }}>
+                        Tạo Tài Khoản  
                     </button>
 
                     <Modal

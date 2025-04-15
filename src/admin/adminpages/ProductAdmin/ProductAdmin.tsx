@@ -350,8 +350,8 @@ const ProductAdmin = () => {
                             onChange={handleSearch}
                         />
                     </div>
-                    <button className="product-admin-button-new-product" onClick={togglePopup}>
-                        Thêm sản phẩm mới
+                    <button className="product-admin-button-new-product" onClick={togglePopup} style={{ height: "40px", width: "180px" }}>
+                        Thêm sản phẩm 
                     </button>
                     <Modal open={modalType === 'add'} onClose={togglePopup}>
                         <div className="popup-form-container">

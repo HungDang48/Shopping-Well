@@ -58,6 +58,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 230px;
 }
 
 .empty-cart button:hover {
