@@ -47,7 +47,7 @@ const OrderAdmin = () => {
   const itemsPerPage = 5;
 
   useEffect(() => {
-    fetch("http://localhost:5000/Orders")
+    fetch("https://shopping-well-back-end-production.up.railway.app/Orders")
       .then((response) => {
         if (!response.ok) throw new Error("Failed to fetch orders");
         return response.json();
@@ -86,7 +86,7 @@ const OrderAdmin = () => {
     e.preventDefault();
     if (!selectedOrder) return;
 
-    fetch(`http://localhost:5000/Orders/${selectedOrder.id}`, {
+    fetch(`https://shopping-well-back-end-production.up.railway.app/Orders/${selectedOrder.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

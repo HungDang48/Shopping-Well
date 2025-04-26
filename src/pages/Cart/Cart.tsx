@@ -31,7 +31,7 @@ const Cart = () => {
         // Fetch products từ API để lấy thông tin stock
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/products');
+                const response = await fetch('https://shopping-well-back-end-production.up.railway.app/products');
                 const data = await response.json();
                 setProducts(data);
             } catch (error) {

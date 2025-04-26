@@ -31,7 +31,7 @@ const ProductDetail2: React.FC = () => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:5000/products/${id}`);
+                const response = await fetch(`https://shopping-well-back-end-production.up.railway.app/products/${id}`);
                 if (!response.ok) throw new Error("Không thể lấy thông tin sản phẩm!");
                 const data: Product = await response.json();
                 setProduct(data);

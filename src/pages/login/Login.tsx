@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // API endpoint (nên dùng biến môi trường)
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  const API_URL = process.env.REACT_APP_API_URL || "https://shopping-well-back-end-production.up.railway.app";
 
   // Xử lý khi nhấn vào "Đăng kí"
   const handleRegisterClick = () => {

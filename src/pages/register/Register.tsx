@@ -36,7 +36,7 @@ const Register = () => {
   // Hàm tạo ID mới tự động tăng
   const generateNewId = async (): Promise<number | null> => {
     try {
-      const response = await axios.get<User[]>('http://localhost:5000/User');
+      const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/User');
       const users = response.data;
 
       const maxId = users.reduce((maxId: number, user: User) => 
@@ -53,7 +53,7 @@ const Register = () => {
   // Hàm tạo UserID mới tự động tăng
   const generateNewUserID = async (): Promise<number | null> => {
     try {
-      const response = await axios.get<User[]>('http://localhost:5000/User');
+      const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/User');
       const users = response.data;
 
       const maxUserID = users.reduce((maxUserID: number, user: User) => 
@@ -70,7 +70,7 @@ const Register = () => {
   // Hàm kiểm tra email đã tồn tại chưa
   const checkEmailExists = async (email: string): Promise<boolean> => {
     try {
-      const response = await axios.get<User[]>('http://localhost:5000/User');
+      const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/User');
       const users = response.data;
 
       // Kiểm tra nếu email đã tồn tại trong hệ thống
@@ -115,7 +115,7 @@ const Register = () => {
       }
 
       // Gửi dữ liệu người dùng lên API để đăng ký
-      const response = await axios.post('http://localhost:5000/User', {
+      const response = await axios.post('https://shopping-well-back-end-production.up.railway.app/User', {
         id: newId,  // Sử dụng ID mới tạo
         UserID: newUserID,  // Sử dụng UserID mới tạo
         name: formData.fullname,

@@ -26,7 +26,7 @@ const CategoriesAdmin = () => {
     // Hàm gọi API để lấy dữ liệu danh mục
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/Categories');
+            const response = await axios.get('https://shopping-well-back-end-production.up.railway.app/categories');
             setCategories(response.data); // Lưu dữ liệu vào state
         } catch (error) {
             console.error('Có lỗi khi lấy dữ liệu danh mục:', error);
@@ -57,7 +57,7 @@ const CategoriesAdmin = () => {
     const handleDelete = async (id: number) => {
         if (window.confirm('Bạn có chắc muốn xóa danh mục này không?')) {
             try {
-                await axios.delete(`http://localhost:5000/Categories/${id}`);
+                await axios.delete(`https://shopping-well-back-end-production.up.railway.app/categories/${id}`);
                 setCategories(categories.filter((category) => category.id !== id)); // Cập nhật danh sách
                 alert('Danh mục đã được xóa!');
             } catch (error) {
@@ -74,7 +74,7 @@ const CategoriesAdmin = () => {
         if (isEditing) {
             // Cập nhật danh mục
             try {
-                const response = await axios.put(`http://localhost:5000/Categories/${formData.id}`, formData as Category);
+                const response = await axios.put(`https://shopping-well-back-end-production.up.railway.app/categories/${formData.id}`, formData as Category);
                 setCategories(categories.map((cat) => (cat.id === formData.id ? response.data : cat)));
                 alert('Danh mục đã được cập nhật!');
             } catch (error) {
@@ -92,7 +92,7 @@ const CategoriesAdmin = () => {
             };
 
             try {
-                await axios.post('http://localhost:5000/Categories', newCategory);
+                await axios.post('https://shopping-well-back-end-production.up.railway.app/categories', newCategory);
                 setCategories([...categories, newCategory]);
                 alert('Danh mục mới đã được tạo!');
             } catch (error) {

@@ -50,7 +50,7 @@ const CheckOut = () => {
       if (!user.userID) return;
 
       try {
-        const response = await fetch('http://localhost:5000/User');
+        const response = await fetch('https://shopping-well-back-end-production.up.railway.app/User');
         if (!response.ok) throw new Error('Lỗi khi gọi API user');
 
         const users = await response.json();
@@ -114,7 +114,7 @@ const CheckOut = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/Orders', {
+      const response = await fetch('https://shopping-well-back-end-production.up.railway.app/Orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),

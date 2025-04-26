@@ -26,7 +26,7 @@ const LoginAdmin = () => {
 
     try {
       // Gọi API để lấy danh sách admin
-      const response = await axios.get('http://localhost:5000/Admins');
+      const response = await axios.get('https://shopping-well-back-end-production.up.railway.app/Admins');
       const admins = response.data;
 
       // Tìm admin có email và password khớp

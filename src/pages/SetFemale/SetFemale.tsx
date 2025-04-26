@@ -29,7 +29,7 @@ const  SetFemale: React.FC = () => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get<Product[]>('http://localhost:5000/products');
+                const response = await axios.get<Product[]>('https://shopping-well-back-end-production.up.railway.app/products');
                 const filteredProducts = response.data.filter(product => product.gendersID === 3);
                 setProducts(filteredProducts);
             } catch (error) {

@@ -61,7 +61,7 @@ const UserAccount: React.FC = () => {
     const handleDelete = async (userId: number) => {
         try {
             // Gửi yêu cầu DELETE đến API để xoá người dùng
-            await axios.delete(`http://localhost:5000/User/${userId}`);
+            await axios.delete(`https://shopping-well-back-end-production.up.railway.app/User/${userId}`);
 
             // Thông báo xoá thành công
             alert('Xoá tài khoản thành công!');
@@ -74,7 +74,6 @@ const UserAccount: React.FC = () => {
         }
     };
 
-    // popup 1
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
@@ -82,7 +81,7 @@ const UserAccount: React.FC = () => {
 
     const fetchUserData = async (userId: number) => {
         try {
-            const response = await axios.get(`http://localhost:5000/User/${userId}`);
+            const response = await axios.get(`https://shopping-well-back-end-production.up.railway.app/User/${userId}`);
             const userData = response.data;
 
             // Map API response fields to form fields
@@ -129,7 +128,7 @@ const UserAccount: React.FC = () => {
 
         try {
             // Gửi PATCH request đến API
-            await axios.patch(`http://localhost:5000/User/${userId}`, {
+            await axios.patch(`https://shopping-well-back-end-production.up.railway.app/User/${userId}`, {
                 id: userId,
                 UserID: formData.UserID || '',
                 name: formData.fullName || '',
@@ -141,7 +140,7 @@ const UserAccount: React.FC = () => {
             });
             alert('Cập nhật thông tin thành công!');
             togglePopup1(); // Đóng popup sau khi cập nhật
-            const response = await axios.get<User[]>('http://localhost:5000/User');
+            const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/User');
             setUserList(response.data);
         } catch (error) {
             console.error('Cập nhật thất bại:', error);
@@ -171,7 +170,7 @@ const UserAccount: React.FC = () => {
         const newid = userList && userList.length > 0 ? userList[userList.length - 1].id + 1 : 1;
 
         try {
-            await axios.post('http://localhost:5000/User', {
+            await axios.post('https://shopping-well-back-end-production.up.railway.app/User', {
                 id: newid,
                 UserID: newUserID,
                 name: formData.fullName,
@@ -187,7 +186,7 @@ const UserAccount: React.FC = () => {
             alert('Tạo tài khoản thành công!');
             setIsPopup1Open(false);
 
-            const response = await axios.get<User[]>('http://localhost:5000/User');
+            const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/User');
             setUserList(response.data);
 
             setFormData({
@@ -219,7 +218,7 @@ const UserAccount: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get<User[]>('http://localhost:5000/User');
+                const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/User');
                 setUserList(response.data);
             } finally {
                 setLoading(false);

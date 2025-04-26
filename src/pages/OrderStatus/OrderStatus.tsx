@@ -39,7 +39,7 @@ const OrderStatus: React.FC = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/Orders');
+        const response = await axios.get('https://shopping-well-back-end-production.up.railway.app/Orders');
         console.log(response.data); // Xem dữ liệu trả về từ API
         setOrderData(response.data);
       } catch (err) {

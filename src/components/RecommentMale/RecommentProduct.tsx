@@ -30,7 +30,7 @@ const RecommentProduct: React.FC = () => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get<Product[]>('http://localhost:5000/products');
+                const response = await axios.get<Product[]>('https://shopping-well-back-end-production.up.railway.app/products');
                 setProducts(response.data);
             } catch (error) {
                 setError(error as Error);

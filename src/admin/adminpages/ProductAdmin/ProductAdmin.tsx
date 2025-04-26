@@ -146,7 +146,7 @@ const ProductAdmin = () => {
 
             setIsSubmitting(true);
             const response = await axios.put(
-                `http://localhost:5000/products/${formData.id}`,
+                `https://shopping-well-back-end-production.up.railway.app/products/${formData.id}`,
                 {
                     ...formData,
                     updatedAt: Date.now()
@@ -178,7 +178,7 @@ const ProductAdmin = () => {
         }
 
         try {
-            await axios.delete(`http://localhost:5000/products/${productId}`);
+            await axios.delete(`https://shopping-well-back-end-production.up.railway.app/products/${productId}`);
             setProductsList((prevList) => prevList?.filter(product => product.id !== productId) || []);
             alert('Xóa sản phẩm thành công!');
         } catch (error) {
@@ -285,7 +285,7 @@ const ProductAdmin = () => {
                 price: newProduct.price,
                 image: newProduct.image,
             };
-            const response = await axios.post('http://localhost:5000/Products', productWithOrderedFields);
+            const response = await axios.post('https://shopping-well-back-end-production.up.railway.app/Products', productWithOrderedFields);
             setProductsList(prev => (prev ? [...prev, response.data] : [response.data]));
             alert('Thêm sản phẩm thành công!');
             togglePopup();
@@ -298,7 +298,7 @@ const ProductAdmin = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/categories');
+                const response = await axios.get('https://shopping-well-back-end-production.up.railway.app/categories');
                 setCategories(response.data);
             } catch (error) {
                 console.error('Lỗi khi lấy danh mục:', error);
@@ -311,9 +311,9 @@ const ProductAdmin = () => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get<Product[]>('http://localhost:5000/Products');
+                const response = await axios.get<Product[]>('https://shopping-well-back-end-production.up.railway.app/Products');
                 setProductsList(response.data);
-                const categoriesResponse = await axios.get<Category[]>('http://localhost:5000/Categories');
+                const categoriesResponse = await axios.get<Category[]>('https://shopping-well-back-end-production.up.railway.app/Categories');
                 setCategoriesList(categoriesResponse.data);
             } catch (error) {
                 console.error('Error fetching products:', error);

@@ -35,7 +35,7 @@ const AdminAccount = () => {
   // Fetch users from the API
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/Admins');
+      const response = await axios.get('https://shopping-well-back-end-production.up.railway.app/Admins');
       setUsers(response.data); // Set the fetched users
     } catch (error) {
       console.error('There was an error fetching the users!', error);
@@ -67,7 +67,7 @@ const AdminAccount = () => {
     }
 
     try {
-      const response = await axios.get<User[]>('http://localhost:5000/Admins');
+      const response = await axios.get<User[]>('https://shopping-well-back-end-production.up.railway.app/Admins');
       const userList = response.data;
 
       const emailExists = userList.some(user => user.email === formData.email);
@@ -80,7 +80,7 @@ const AdminAccount = () => {
       const newid = userList.length > 0 ? userList[userList.length - 1].id + 1 : 1;
 
       // Create new user
-      await axios.post('http://localhost:5000/Admins', {
+      await axios.post('https://shopping-well-back-end-production.up.railway.app/Admins', {
         id: newid,
         AdminID: newAdminID,
         name: formData.fullName,
@@ -119,7 +119,7 @@ const AdminAccount = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/Admins/${AdminId}`);
+      await axios.delete(`https://shopping-well-back-end-production.up.railway.app/Admins/${AdminId}`);
       alert("Xóa tài khoản thành công!");
       fetchUsers(); // Re-fetch users to update the list
     } catch (error) {
@@ -154,7 +154,7 @@ const AdminAccount = () => {
 
     try {
       // Update user details
-      await axios.put(`http://localhost:5000/Admins/${selectedUser?.id}`, {
+      await axios.put(`https://shopping-well-back-end-production.up.railway.app/Admins/${selectedUser?.id}`, {
         ...selectedUser,
         name: formData.fullName,
         username: formData.username,

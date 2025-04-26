@@ -39,7 +39,7 @@ const FemaleProduct: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<Product[]>('http://localhost:5000/products');
+      const response = await axios.get<Product[]>('https://shopping-well-back-end-production.up.railway.app/products');
       const filteredProducts = response.data.filter(product => product.gendersID === 2);
       setProducts(filteredProducts);
       setFilteredProducts(filteredProducts); // Hiển thị tất cả sản phẩm ban đầu
@@ -54,7 +54,7 @@ const FemaleProduct: React.FC = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<Category[]>('http://localhost:5000/categories');
+      const response = await axios.get<Category[]>('https://shopping-well-back-end-production.up.railway.app/categories');
       const filteredCategories = response.data.filter(category => category.gendersID === 2);
       setCategories(filteredCategories);
     } catch (error) {
