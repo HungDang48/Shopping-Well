@@ -90,9 +90,7 @@ const HotSaleProduct: React.FC = () => {
                 </button>
             </div>
 
-            <a className="view-all" href="#">
-                XEM TẤT CẢ . SẢN PHẨM BÁN CHẠY
-            </a>
+             
         </div>
     );
 };
